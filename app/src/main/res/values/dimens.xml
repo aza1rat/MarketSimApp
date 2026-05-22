@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_horizontal_padding">24dp</dimen>
+    <dimen name="large_element_vertical_padding">32dp</dimen>
+    <dimen name="icon_size">16dp</dimen>
+    <dimen name="attached_icon_padding">8dp</dimen>
+</resources>
