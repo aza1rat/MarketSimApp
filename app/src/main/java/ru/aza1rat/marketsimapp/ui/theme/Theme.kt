@@ -1,4 +1,4 @@
-package ru.aza_rat.marketsimapp.ui.theme
+package ru.aza1rat.marketsimapp.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

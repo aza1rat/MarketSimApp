@@ -1,16 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.detekt.dev)
 }
 
 android {
-    namespace = "ru.aza_rat.marketsimapp"
+    namespace = "ru.aza1rat.marketsimapp"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "ru.aza_rat.marketsimapp"
+        applicationId = "ru.aza1rat.marketsimapp"
         minSdk = 28
         targetSdk = 36
         versionCode = 1

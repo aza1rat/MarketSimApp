@@ -1,4 +1,4 @@
-package ru.aza_rat.marketsimapp
+package ru.aza1rat.marketsimapp
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,8 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ru.aza_rat.marketsimapp.ui.common.Title
-import ru.aza_rat.marketsimapp.ui.theme.Gray
+import ru.aza1rat.marketsimapp.ui.common.Title
+import ru.aza1rat.marketsimapp.ui.theme.Gray
 
 @Composable
 fun CategoryScreen(innerPadding: PaddingValues) {

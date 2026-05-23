@@ -1,4 +1,4 @@
-package ru.aza_rat.marketsimapp
+package ru.aza1rat.marketsimapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,8 +9,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import ru.aza_rat.marketsimapp.ui.navigation.composable.BottomBar
-import ru.aza_rat.marketsimapp.ui.theme.MarketSimAppTheme
+import ru.aza1rat.marketsimapp.ui.navigation.composable.BottomBar
+import ru.aza1rat.marketsimapp.ui.theme.MarketSimAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

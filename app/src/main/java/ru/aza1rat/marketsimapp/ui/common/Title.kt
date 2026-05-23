@@ -1,4 +1,4 @@
-package ru.aza_rat.marketsimapp.ui.common
+package ru.aza1rat.marketsimapp.ui.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth

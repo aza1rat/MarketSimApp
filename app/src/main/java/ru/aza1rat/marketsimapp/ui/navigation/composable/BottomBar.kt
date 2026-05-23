@@ -1,4 +1,4 @@
-package ru.aza_rat.marketsimapp.ui.navigation.composable
+package ru.aza1rat.marketsimapp.ui.navigation.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ru.aza_rat.marketsimapp.ui.navigation.Destination
+import ru.aza1rat.marketsimapp.ui.navigation.Destination
 
 @Composable
 fun BottomBar() {
