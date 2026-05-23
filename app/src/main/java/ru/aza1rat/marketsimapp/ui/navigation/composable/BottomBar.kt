@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import ru.aza1rat.marketsimapp.ui.navigation.Destination
 
 @Composable
-fun BottomBar() {
+fun BottomBar(modifier: Modifier = Modifier) {
     val selectedIndex = rememberSaveable { mutableIntStateOf(1) }
-    Box {
+    Box(modifier = modifier) {
         NavigationBar {
             Destination.entries.forEachIndexed { index, destination ->
                 NavigationBarItem(selected = index == selectedIndex.intValue, onClick = {

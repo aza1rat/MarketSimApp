@@ -30,9 +30,9 @@ import ru.aza1rat.marketsimapp.ui.common.Title
 import ru.aza1rat.marketsimapp.ui.theme.Gray
 
 @Composable
-fun CategoryScreen(innerPadding: PaddingValues) {
+fun CategoryScreen(innerPadding: PaddingValues, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(
                 start = dimensionResource(R.dimen.main_horizontal_padding),
@@ -47,7 +47,7 @@ fun CategoryScreen(innerPadding: PaddingValues) {
 }
 
 @Composable
-fun SearchTextField() {
+private fun SearchTextField() {
     val text = remember { mutableStateOf("") }
     BasicTextField(
         value = text.value,

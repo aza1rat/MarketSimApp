@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Title(@StringRes textResourceId: Int, paddingTop: Dp = 8.dp) {
+fun Title(@StringRes textResourceId: Int, modifier: Modifier = Modifier, paddingTop: Dp = 8.dp) {
     Text(
-        modifier = Modifier
+        modifier = modifier
             .padding(top = paddingTop)
             .fillMaxWidth(),
         text = stringResource(textResourceId),
