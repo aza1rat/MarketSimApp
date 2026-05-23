@@ -19,9 +19,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             MarketSimAppTheme {
                 Scaffold(
-                    modifier = Modifier.fillMaxSize(), bottomBar = {
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
                         BottomBar()
-                    }) { innerPadding ->
+                    }
+                ) { innerPadding ->
                     CategoryScreen(innerPadding)
                 }
             }
@@ -33,9 +35,11 @@ class MainActivity : ComponentActivity() {
     private fun CategoryScreenPreview() {
         MarketSimAppTheme {
             Scaffold(
-                modifier = Modifier.fillMaxSize(), bottomBar = {
+                modifier = Modifier.fillMaxSize(),
+                bottomBar = {
                     BottomBar()
-                }) { innerPadding ->
+                }
+            ) { innerPadding ->
                 CategoryScreen(innerPadding)
             }
         }
@@ -46,9 +50,11 @@ class MainActivity : ComponentActivity() {
     private fun CategoryScreenDarkPreview() {
         MarketSimAppTheme(darkTheme = true) {
             Scaffold(
-                modifier = Modifier.fillMaxSize(), bottomBar = {
+                modifier = Modifier.fillMaxSize(),
+                bottomBar = {
                     BottomBar()
-                }) { innerPadding ->
+                }
+            ) { innerPadding ->
                 CategoryScreen(innerPadding)
             }
         }

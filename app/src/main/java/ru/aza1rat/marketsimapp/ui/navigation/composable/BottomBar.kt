@@ -29,7 +29,8 @@ fun BottomBar() {
                     selectedIndex.intValue = index
                 }, icon = {
                     Icon(
-                        imageVector = destination.icon, contentDescription = ""
+                        imageVector = destination.icon,
+                        contentDescription = ""
                     )
                 }, label = {
                     Text(
@@ -45,7 +46,8 @@ fun BottomBar() {
                 .height(1.dp)
                 .fillMaxWidth()
                 .background(
-                    MaterialTheme.colorScheme.onSurfaceVariant, RectangleShape
+                    MaterialTheme.colorScheme.onSurfaceVariant,
+                    RectangleShape
                 )
         )
     }

@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.detekt.dev)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -54,4 +54,32 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    detektPlugins(libs.detekt.plugin.formatting)
+    detektPlugins(libs.detekt.plugin.rules.compose)
+}
+
+detekt {
+    autoCorrect = true
+    toolVersion = "1.23.8"
+    parallel = true
+    config.setFrom(files("$projectDir/detekt-config.yml"))
+    baseline = file("$projectDir/detekt-baseline.xml")
+    allRules = false
+    ignoreFailures = false
+    buildUponDefaultConfig = true
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "11"
+    exclude("**/build/**", "**/resources/**", "**/generated/**")
+    include("**/*.kt", "**/*.kts")
+    reports {
+        html.required.set(true)
+        xml.required.set(false)
+        txt.required.set(false)
+        sarif.required.set(false)
+        md.required.set(false)
+    }
+    buildUponDefaultConfig = true
 }
