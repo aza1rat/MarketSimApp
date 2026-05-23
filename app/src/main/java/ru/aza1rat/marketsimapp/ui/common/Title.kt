@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Title(paddingTop: Dp = 8.dp, @StringRes textResourceId: Int) {
+fun Title(@StringRes textResourceId: Int, paddingTop: Dp = 8.dp) {
     Text(
         modifier = Modifier
             .padding(top = paddingTop)
