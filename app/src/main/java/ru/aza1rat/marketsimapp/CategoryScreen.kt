@@ -3,7 +3,6 @@ package ru.aza1rat.marketsimapp
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,15 +29,13 @@ import ru.aza1rat.marketsimapp.ui.common.Title
 import ru.aza1rat.marketsimapp.ui.theme.Gray
 
 @Composable
-fun CategoryScreen(innerPadding: PaddingValues, modifier: Modifier = Modifier) {
+fun CategoryScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(
                 start = dimensionResource(R.dimen.main_horizontal_padding),
-                end = dimensionResource(R.dimen.main_horizontal_padding),
-                top = innerPadding.calculateTopPadding(),
-                bottom = innerPadding.calculateBottomPadding()
+                end = dimensionResource(R.dimen.main_horizontal_padding)
             )
     ) {
         Title(textResourceId = R.string.title_search_category)
