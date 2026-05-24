@@ -21,7 +21,7 @@ import ru.aza1rat.marketsimapp.ui.navigation.Destination
 
 @Composable
 fun BottomBar(modifier: Modifier = Modifier) {
-    val selectedIndex = rememberSaveable { mutableIntStateOf(1) }
+    val selectedIndex = rememberSaveable { mutableIntStateOf(Destination.APP_START_DESTINATION_INDEX) }
     Box(modifier = modifier) {
         NavigationBar {
             Destination.entries.forEachIndexed { index, destination ->

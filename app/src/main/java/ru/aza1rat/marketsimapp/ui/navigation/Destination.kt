@@ -14,5 +14,9 @@ enum class Destination(val labelStringId: Int, val icon: ImageVector) {
     Search(R.string.destination_search, Icons.Default.Search),
     Cart(R.string.destination_cart, Icons.Default.ShoppingCart),
     Favorites(R.string.destination_favorites, Icons.Default.FavoriteBorder),
-    Account(R.string.destination_account, Icons.Default.AccountCircle)
+    Account(R.string.destination_account, Icons.Default.AccountCircle);
+
+    companion object {
+        const val APP_START_DESTINATION_INDEX = 1
+    }
 }
