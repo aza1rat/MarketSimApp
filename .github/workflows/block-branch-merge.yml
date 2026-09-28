@@ -1,0 +1,13 @@
+name: Запрет для веток dont-merge на мердж в любую ветку
+on:
+  pull_request:
+jobs:
+  check:
+    name: Проверка на случай если merge веток dont-merge
+    if: startsWith(github.head_ref,'dont-merge/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Тест будет пройден если ветка без префикса dont-merge
+        run: |
+            echo "Ветка не должна мерджиться в любую другую ветку"
+            exit 1
