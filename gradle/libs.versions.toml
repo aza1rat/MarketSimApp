@@ -35,5 +35,8 @@ android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", ve
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+convention-android-lib = { id = "convention.android.lib" }
+convention-kotlin = { id = "convention.kotlin" }
+convention-application = { id = "convention.application" }
 
 
