@@ -10,6 +10,7 @@ kotlin = "2.0.21"
 composeBom = "2024.09.00"
 detekt = "1.23.8"
 detekt-twitter-compose-rules = "0.0.26"
+coroutines = "1.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,6 +31,8 @@ detekt-plugin-formatting = { group = "io.gitlab.arturbosch.detekt", name = "dete
 detekt-plugin-rules-compose = { group = "com.twitter.compose.rules", name = "detekt", version.ref = "detekt-twitter-compose-rules" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
