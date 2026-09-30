@@ -22,3 +22,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "market-sim-app-root"
 include(":app")
+include(":core:network")
+include(":core:database")
+include(":core:ui")
+include(":core:navigation")
+include(":feature:auth:api")
+include(":feature:auth:impl")
+include(":feature:register:api")
+include(":feature:register:impl")
