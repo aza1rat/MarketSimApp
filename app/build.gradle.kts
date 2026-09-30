@@ -1,19 +1,14 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.convention.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.detekt)
 }
 
 android {
     namespace = "ru.aza1rat.marketsimapp"
-    compileSdk {
-        version = release(36)
-    }
 
     defaultConfig {
         applicationId = "ru.aza1rat.marketsimapp"
-        minSdk = 28
-        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -28,13 +23,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
