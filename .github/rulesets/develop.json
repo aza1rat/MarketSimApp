@@ -24,10 +24,7 @@
       "parameters": {
         "required_status_checks": [
           {
-            "context": "build"
-          },
-          {
-            "context": "test"
+            "context": "validate"
           }
         ],
         "strict_required_status_checks_policy": true,
