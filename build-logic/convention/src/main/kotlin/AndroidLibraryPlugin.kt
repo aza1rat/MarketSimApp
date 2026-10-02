@@ -7,10 +7,10 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-class AndroidLibraryPlugin: Plugin<Project> {
+class AndroidLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.pluginManager.apply(ANDROID_LIBRARY_ID)
-        target.extensions.configure<LibraryExtension>{
+        target.extensions.configure<LibraryExtension> {
             compileSdk {
                 version = release(SDK_COMPILE)
             }

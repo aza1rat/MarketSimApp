@@ -6,4 +6,6 @@ plugins {
     alias(libs.plugins.google.dagger.hilt.android) apply false
     kotlin(libs.plugins.kotlin.plugin.serialization.get().pluginId) version
             (libs.plugins.kotlin.plugin.serialization.get().version.requiredVersion)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.convention.detekt)
 }
