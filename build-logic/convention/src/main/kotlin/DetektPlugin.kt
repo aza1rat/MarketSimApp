@@ -1,10 +1,8 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import model.ProjectParameters.DETEKT_JVM_TARGET
-import model.ProjectParameters.JVM_TARGET
 import model.RequiredDependencies.DETEKT_COMPOSE_RULES_ALIAS
 import model.RequiredDependencies.DETEKT_CONFIGURATION_NAME
 import model.RequiredDependencies.DETEKT_FORMATTING_ALIAS
-import model.RequiredPluginsId
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
