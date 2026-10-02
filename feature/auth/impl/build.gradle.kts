@@ -10,6 +10,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:mvi"))
+    implementation(project(":core:network"))
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
