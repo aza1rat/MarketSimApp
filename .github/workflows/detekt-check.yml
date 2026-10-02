@@ -1,0 +1,44 @@
+name: Detekt Check
+
+on:
+  pull_request:
+
+env:
+  reviewdogSetupPrReview: -f=checkstyle -name="detekt" -level=error -filter-mode=added -reporter=github-pr-review
+  reviewdogSetupPrCheck: -f=checkstyle -name="detekt" -level=error -filter-mode=added -reporter=github-pr-check
+  detektReportPath: ./build/reports/detekt/detekt.xml
+  gradlewParams: --stacktrace --no-configuration-cache --no-daemon
+
+jobs:
+  detekt:
+    name: Проверка с Detekt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Скачаем проект
+        uses: actions/checkout@v4
+
+      - name: Установим JDK 17
+        uses: actions/setup-java@v6.0.1
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Задаем права на запуск gradlew
+        run: chmod +x gradlew
+
+      - name: Запускаем задачу detekt
+        run: ./gradlew detektMe $gradlewParams
+
+      - name: Позовем Reviewdog
+        uses: reviewdog/action-setup@v1.4.0
+
+      - name: Reviewdog для pr ревью
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: reviewdog $reviewdogSetupPrReview < $detektReportPath
+
+      - name: Reviewdog для pr проверки
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: reviewdog $reviewdogSetupPrCheck < $detektReportPath
