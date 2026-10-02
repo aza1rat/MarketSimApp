@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "ru.aza1rat.marketsimapp.core.navigation"
 }
+
+dependencies {
+    api(libs.androidx.navigation.compose)
+}
