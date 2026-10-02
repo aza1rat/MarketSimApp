@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MarketSimApp</string>
+    <string name="app_name">Arvo</string>
     <string name="title_search_category">Что купим сегодня?</string>
     <string name="search_category_search_placeholder">Ищем по магазину...</string>
     <string name="destination_store">Магазин</string>
