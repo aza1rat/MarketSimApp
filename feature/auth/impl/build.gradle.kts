@@ -12,7 +12,6 @@ android {
 dependencies {
     implementation(project(":core:mvi"))
     implementation(project(":core:network"))
-    implementation(project(":feature:auth:api"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
