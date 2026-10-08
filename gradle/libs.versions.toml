@@ -54,6 +54,7 @@ ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serializatio
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 kaspersky-kaspresso = { group = "com.kaspersky.android-components", name = "kaspresso", version.ref = "kaspresso" }
+detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -65,5 +66,6 @@ convention-android-lib = { id = "convention.android.lib" }
 convention-kotlin = { id = "convention.kotlin" }
 convention-application = { id = "convention.application" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+convention-detekt = { id = "convention.detekt" }
 
 
