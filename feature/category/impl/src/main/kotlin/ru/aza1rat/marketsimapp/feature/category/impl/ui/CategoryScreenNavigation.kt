@@ -21,6 +21,7 @@ fun NavGraphBuilder.categoryScreenNavigation(navController: NavController) {
     }
 }
 
+@Suppress("EmptyFunctionBlock", "UnusedParameter")
 @Composable
 fun CategoryScreenRouteContent(navController: NavController) {
 }

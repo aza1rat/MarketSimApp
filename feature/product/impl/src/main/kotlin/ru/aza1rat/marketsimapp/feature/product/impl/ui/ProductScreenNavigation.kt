@@ -21,6 +21,7 @@ fun NavGraphBuilder.productScreenNavigation(navController: NavController) {
     }
 }
 
+@Suppress("EmptyFunctionBlock", "UnusedParameter")
 @Composable
 fun ProductScreenRouteContent(navController: NavController) {
 }

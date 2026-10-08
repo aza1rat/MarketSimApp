@@ -29,20 +29,25 @@ fun NavGraphBuilder.loginScreenNavigation(navController: NavController) {
     }
 }
 
+@Suppress("UnusedParameter")
 @Composable
-fun LoginScreenRouteContent(navController: NavController) {
-    val viewModel: LoginViewModel = hiltViewModel()
+fun LoginScreenRouteContent(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel(),
+) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(viewModel) {
         viewModel.effects.collect { effect ->
-            {}
+            {
+            }
         }
     }
 
-    Scaffold() { paddingValues ->
+    Scaffold { paddingValues ->
         LoginScreen(
-            modifier = Modifier.padding(paddingValues),
+            modifier = modifier.padding(paddingValues),
             state = state,
             onIntent = {}
         )

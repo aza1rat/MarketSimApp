@@ -15,13 +15,13 @@ import ru.aza1rat.marketsimapp.feature.tracking.impl.ui.trackingScreenNavigation
 
 @Composable
 fun MarketSimNavHost(
-    modifier: Modifier = Modifier,
     navController: NavHostController,
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
-        modifier = modifier,
         navController = navController,
-        startDestination = AuthScreenRoute
+        startDestination = AuthScreenRoute,
+        modifier = modifier,
     ) {
         authScreenNavigation(navController)
         cartScreenNavigation(navController)

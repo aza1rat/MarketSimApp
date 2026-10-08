@@ -20,6 +20,6 @@ fun NavGraphBuilder.registerScreenNavigation(navController: NavController) {
     }
 }
 
+@Suppress("EmptyFunctionBlock", "UnusedParameter")
 @Composable
-fun RegisterScreenRouteContent(navController: NavController) {
-}
+fun RegisterScreenRouteContent(navController: NavController) {}

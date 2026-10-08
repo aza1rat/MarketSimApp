@@ -7,11 +7,12 @@ import androidx.compose.ui.Modifier
 import ru.aza1rat.marketsimapp.feature.auth.impl.login.presentation.LoginIntent
 import ru.aza1rat.marketsimapp.feature.auth.impl.login.presentation.LoginState
 
+@Suppress("UnusedParameter")
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier,
     state: LoginState,
-    onIntent: (LoginIntent) -> Unit
+    modifier: Modifier = Modifier,
+    onIntent: (LoginIntent) -> Unit,
 ) {
     Box(modifier = modifier) {
         Text(TEST_TEXT)

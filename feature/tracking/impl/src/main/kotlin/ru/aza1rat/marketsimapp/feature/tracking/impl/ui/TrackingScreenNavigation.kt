@@ -21,6 +21,7 @@ fun NavGraphBuilder.trackingScreenNavigation(navController: NavController) {
     }
 }
 
+@Suppress("EmptyFunctionBlock", "UnusedParameter")
 @Composable
 fun TrackingScreenRouteContent(navController: NavController) {
 }

@@ -21,6 +21,7 @@ fun NavGraphBuilder.mainScreenNavigation(navController: NavController) {
     }
 }
 
+@Suppress("EmptyFunctionBlock", "UnusedParameter")
 @Composable
 fun MainScreenRouteContent(navController: NavController) {
 }

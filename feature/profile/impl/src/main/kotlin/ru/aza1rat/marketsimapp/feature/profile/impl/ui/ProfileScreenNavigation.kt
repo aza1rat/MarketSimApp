@@ -21,6 +21,7 @@ fun NavGraphBuilder.profileScreenNavigation(navController: NavController) {
     }
 }
 
+@Suppress("EmptyFunctionBlock", "UnusedParameter")
 @Composable
 fun ProfileScreenRouteContent(navController: NavController) {
 }
