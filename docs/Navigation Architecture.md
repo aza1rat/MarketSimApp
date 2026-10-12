@@ -40,14 +40,16 @@ Destination регистрируется с использованием type-sa
 
 ```kotlin
 composable<LoginScreenRoute> {
-    LoginScreenRouteContent(navController)
+    LoginScreen()
 }
 ```
 
 Для перехода используется типизированный route вместо строкового значения:
 
 ```kotlin
-navController.navigate(RegisterScreenRoute)
+fun NavController.navigateToRegister() {
+    navigate(route = RegisterScreenRoute)
+}
 ```
 
 Таким образом, маршруты представлены Kotlin-типами, а не строками.
@@ -62,10 +64,10 @@ navController.navigate(RegisterScreenRoute)
 
 ```kotlin
 fun NavGraphBuilder.loginScreenNavigation(
-    navController: NavController
+    onNavigateToMain: () -> Unit
 ) {
     composable<LoginScreenRoute> {
-        LoginScreenRouteContent(navController)
+        LoginScreen()
     }
 }
 ```
@@ -81,21 +83,21 @@ fun NavGraphBuilder.loginScreenNavigation(
 ```kotlin
 @Composable
 fun MarketSimNavHost(
-    modifier: Modifier = Modifier,
     navController: NavHostController,
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = AuthScreenRoute
     ) {
-        authScreenNavigation(navController)
-        cartScreenNavigation(navController)
-        categoryScreenNavigation(navController)
-        mainScreenNavigation(navController)
-        productScreenNavigation(navController)
-        profileScreenNavigation(navController)
-        trackingScreenNavigation(navController)
+        authScreenNavigation()
+        cartScreenNavigation()
+        categoryScreenNavigation()
+        mainScreenNavigation()
+        productScreenNavigation()
+        profileScreenNavigation()
+        trackingScreenNavigation()
     }
 }
 ```
@@ -111,14 +113,12 @@ fun MarketSimNavHost(
 Например, авторизация объединяет `Login` и `Register`:
 
 ```kotlin
-fun NavGraphBuilder.authScreenNavigation(
-    navController: NavController
-) {
+fun NavGraphBuilder.authScreenNavigation() {
     navigation<AuthScreenRoute>(
         startDestination = LoginScreenRoute
     ) {
-        loginScreenNavigation(navController)
-        registerScreenNavigation(navController)
+        loginScreenNavigation()
+        registerScreenNavigation()
     }
 }
 ```
@@ -135,15 +135,9 @@ fun NavGraphBuilder.authScreenNavigation(
 
 ## 6. Границы ответственности модулей
 
-### `feature:<name>:api`
+### `feature:<name>`
 
-Содержит публичный контракт feature, который может потребоваться другим модулям.
-
-В контексте навигации здесь могут находиться публичные navigation contracts / routes, если они необходимы за пределами `impl`.
-
-### `feature:<name>:impl`
-
-Содержит реализацию feature:
+Содержит публичный контракт и реализацию feature.
 
 * UI;
 * ViewModel;
@@ -151,20 +145,6 @@ fun NavGraphBuilder.authScreenNavigation(
 * navigation graph конкретной feature;
 * внутренние implementation details.
 
-Например:
-
-```text
-feature:auth:impl
-├── login/
-│   ├── LoginScreen.kt
-│   ├── LoginViewModel.kt
-│   └── LoginNavigation.kt
-│
-└── register/
-    ├── RegisterScreen.kt
-    ├── RegisterViewModel.kt
-    └── RegisterNavigation.kt
-```
 
 ### `core:navigation`
 
@@ -176,8 +156,7 @@ feature:auth:impl
 
 ```text
 app
- ├── feature:auth:api
- ├── feature:auth:impl
+ ├── feature:auth
  └── core:navigation
 
 core:navigation
@@ -203,7 +182,7 @@ Feature не должна знать о полном navigation graph прило
 Например, `auth` отвечает за:
 
 ```kotlin
-authScreenNavigation(navController)
+authScreenNavigation()
 ```
 
 но не должен самостоятельно добавлять `cart`, `profile` или другие feature в корневой graph.
@@ -219,7 +198,7 @@ fun NavGraphBuilder.loginScreenNavigation(
     navController: NavController
 ) {
     composable<LoginScreenRoute> {
-        LoginScreenRouteContent(navController)
+        LoginScreenRouteContent()
     }
 }
 ```
@@ -252,12 +231,12 @@ ViewModel создаётся внутри соответствующего navig
 
 ```kotlin
 @Composable
-fun LoginScreenRouteContent(
-    navController: NavController
-) {
+fun NavGraphBuilder.loginScreenNavigation() {
+    composable<LoginScreenRoute>(){
     val viewModel: LoginViewModel = hiltViewModel()
 
     // ...
+ }
 }
 ```
 
@@ -281,11 +260,9 @@ data object NewScreenRoute
 2. Создать функцию регистрации destination:
 
 ```kotlin
-fun NavGraphBuilder.newScreenNavigation(
-    navController: NavController
-) {
+fun NavGraphBuilder.newScreenNavigation() {
     composable<NewScreenRoute> {
-        NewScreenRouteContent(navController)
+        NewScreen()
     }
 }
 ```
