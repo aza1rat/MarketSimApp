@@ -28,6 +28,15 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:navigation"))
+    implementation(project(":feature:auth"))
+    implementation(project(":feature:cart"))
+    implementation(project(":feature:category"))
+    implementation(project(":feature:main"))
+    implementation(project(":feature:product"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:tracking"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -37,6 +46,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.google.dagger.hilt.android)
     ksp(libs.google.dagger.hilt.android.compiler)
 
