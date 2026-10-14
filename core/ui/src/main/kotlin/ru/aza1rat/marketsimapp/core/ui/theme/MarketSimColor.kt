@@ -1,8 +1,10 @@
 package ru.aza1rat.marketsimapp.core.ui.theme
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
+@Immutable
 data class MarketSimColor(
     val primary: Color,
     val error: Color,

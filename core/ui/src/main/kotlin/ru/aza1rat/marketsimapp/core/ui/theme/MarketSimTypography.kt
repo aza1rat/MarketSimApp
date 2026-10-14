@@ -1,5 +1,6 @@
 package ru.aza1rat.marketsimapp.core.ui.theme
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -16,6 +17,7 @@ internal val largeFontBoldWeight = FontWeight(800)
 internal val mediumFontWeight = FontWeight(400)
 internal val mediumSemiboldWeight = FontWeight(600)
 
+@Immutable
 data class MarketSimTypography(
     val displayLarge: TextStyle = TextStyle(
         fontFamily = urbanistFont,

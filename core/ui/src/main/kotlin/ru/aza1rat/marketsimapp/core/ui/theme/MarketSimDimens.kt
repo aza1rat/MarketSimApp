@@ -1,9 +1,11 @@
 package ru.aza1rat.marketsimapp.core.ui.theme
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@Immutable
 data class MarketSimDimens(
     val edgePaddingSmall: Dp = 12.dp,
     val edgePaddingSM: Dp = 16.dp,
