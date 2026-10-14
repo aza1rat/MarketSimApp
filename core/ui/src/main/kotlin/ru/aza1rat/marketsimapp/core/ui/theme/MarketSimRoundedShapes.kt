@@ -14,3 +14,7 @@ data class MarketSimRoundedShapes(
 )
 
 internal val RoundedShapes = MarketSimRoundedShapes()
+
+internal val LocalThemeRoundedShapes = staticCompositionLocalOf<MarketSimRoundedShapes> {
+    error("RoundedShapes темы не предоставлены")
+}

@@ -37,3 +37,7 @@ data class MarketSimDimens(
 )
 
 internal val DimensTokens = MarketSimDimens()
+
+internal val LocalThemeDimens = staticCompositionLocalOf<MarketSimDimens> {
+    error("Dimens темы не предоставлены")
+}

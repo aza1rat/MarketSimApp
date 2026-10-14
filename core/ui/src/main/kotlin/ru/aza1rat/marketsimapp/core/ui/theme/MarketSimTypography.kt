@@ -160,3 +160,7 @@ data class MarketSimTypography(
 )
 
 internal val TypographyTokens = MarketSimTypography()
+
+internal val LocalThemeTypography = staticCompositionLocalOf<MarketSimTypography> {
+    error("Типография темы не предоставлены")
+}

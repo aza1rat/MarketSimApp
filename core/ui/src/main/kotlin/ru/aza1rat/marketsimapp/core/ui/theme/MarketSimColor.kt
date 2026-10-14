@@ -42,3 +42,6 @@ internal val DarkPalette = MarketSimColor(
     tertiaryContainer = Color(0xFFF5F5F5)
 )
 
+internal val LocalThemeColors = staticCompositionLocalOf<MarketSimColor> {
+    error("Цвета темы не предоставлены")
+}
