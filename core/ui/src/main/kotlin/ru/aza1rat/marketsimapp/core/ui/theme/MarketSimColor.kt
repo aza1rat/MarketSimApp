@@ -17,29 +17,29 @@ data class MarketSimColor(
 )
 
 internal val LightPalette = MarketSimColor(
-    primary = Color(0xFFEFF422),
-    error = Color(0xFFFF4B26),
-    secondaryContainer = Color(0xFFFAFAF4),
-    tertiary = Color(0xFFFFB800),
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF181818),
-    onSecondaryContainerVariant = Color(0xFFA0A0A0),
-    outline = Color(0xFFD0D0D0),
-    outlineVariant = Color(0xFFEFF422),
-    tertiaryContainer = Color(0xFFF9F9F9)
+    primary = LimeYellow,
+    error = RedOrange,
+    secondaryContainer = OffWhite,
+    tertiary = Amber,
+    surface = White,
+    onSurface = NearBlack,
+    onSecondaryContainerVariant = Gray500,
+    outline = Gray300,
+    outlineVariant = LimeYellow,
+    tertiaryContainer = Gray100
 )
 
 internal val DarkPalette = MarketSimColor(
-    primary = Color(0xFFEFF422),
-    error = Color(0xFFFF4B26),
-    secondaryContainer = Color(0xFF4D4D4D),
-    tertiary = Color(0xFFFFB800),
-    surface = Color(0xFF181818),
-    onSurface = Color(0xFFFFFFFF),
-    onSecondaryContainerVariant = Color(0xFFA0A0A0),
-    outline = Color(0xFF4D4D4D),
-    outlineVariant = Color(0xFF5C5C5C),
-    tertiaryContainer = Color(0xFFF5F5F5)
+    primary = LimeYellow,
+    error = RedOrange,
+    secondaryContainer = Gray700,
+    tertiary = Amber,
+    surface = NearBlack,
+    onSurface = White,
+    onSecondaryContainerVariant = Gray500,
+    outline = Gray700,
+    outlineVariant = Gray600,
+    tertiaryContainer = Gray50
 )
 
 internal val LocalThemeColors = staticCompositionLocalOf<MarketSimColor> {
