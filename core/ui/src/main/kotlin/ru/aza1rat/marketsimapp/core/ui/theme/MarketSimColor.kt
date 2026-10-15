@@ -12,7 +12,7 @@ data class MarketSimColor(
     val tertiary: Color,
     val surface: Color,
     val onSurface: Color,
-    val onSecondaryContainerVariant: Color,
+    val onSecondaryContainer: Color,
     val outline: Color,
     val outlineVariant: Color,
     val tertiaryContainer: Color
@@ -25,7 +25,7 @@ internal val LightPalette = MarketSimColor(
     tertiary = Amber,
     surface = White,
     onSurface = NearBlack,
-    onSecondaryContainerVariant = Gray500,
+    onSecondaryContainer = Gray500,
     outline = Gray300,
     outlineVariant = LimeYellow,
     tertiaryContainer = Gray100
@@ -38,7 +38,7 @@ internal val DarkPalette = MarketSimColor(
     tertiary = Amber,
     surface = NearBlack,
     onSurface = White,
-    onSecondaryContainerVariant = Gray500,
+    onSecondaryContainer = Gray500,
     outline = Gray700,
     outlineVariant = Gray600,
     tertiaryContainer = Gray50
