@@ -2,4 +2,7 @@ package ru.aza1rat.marketsimapp.feature.auth.login.presentation
 
 import ru.aza1rat.marketsimapp.core.mvi.MviEffect
 
-sealed class LoginEffect : MviEffect
+sealed class LoginEffect : MviEffect {
+    data object NavigateToRegister : LoginEffect()
+    data object NavigateToMain : LoginEffect()
+}

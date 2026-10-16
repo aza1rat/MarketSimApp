@@ -23,7 +23,11 @@ fun MarketSimNavHost(
         startDestination = AuthScreenRoute,
         modifier = modifier,
     ) {
-        authScreenNavigation(onNavigateToMain = { navController.navigateToMainScreenClearingAuth() })
+        authScreenNavigation(
+            onNavigateToMain = { navController.navigateToMainScreenClearingAuth() },
+            onNavigateToRegister = { navController.navigateToRegisterScreen() },
+            onNavigateToLogin = { navController.navigateBack() }
+        )
         cartScreenNavigation()
         categoryScreenNavigation()
         mainScreenNavigation()
