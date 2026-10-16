@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -19,5 +20,17 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MarketSimApp"
+rootProject.name = "market-sim-app-root"
 include(":app")
+include(":core:network")
+include(":core:database")
+include(":core:ui")
+include(":core:mvi")
+include(":core:navigation")
+include(":feature:auth")
+include(":feature:cart")
+include(":feature:category")
+include(":feature:main")
+include(":feature:product")
+include(":feature:profile")
+include(":feature:tracking")
