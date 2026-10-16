@@ -786,3 +786,12 @@ style:
     active: true
     excludeImports:
       - 'java.util.*'
+
+TwitterCompose:
+  CompositionLocalAllowlist:
+    active: true
+    allowedCompositionLocals:
+      - LocalThemeColors
+      - LocalThemeDimens
+      - LocalThemeRoundedShapes
+      - LocalThemeTypography

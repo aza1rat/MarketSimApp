@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import ru.aza1rat.marketsimapp.ui.theme.MarketSimAppTheme
+import ru.aza1rat.marketsimapp.core.ui.theme.MarketSimTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MarketSimAppTheme {
+            MarketSimTheme {
                 val navController = rememberNavController()
                 MarketSimNavHost(
                     navController = navController,
