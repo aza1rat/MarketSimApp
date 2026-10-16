@@ -13,11 +13,15 @@ import ru.aza1rat.marketsimapp.core.navigation.defaultEnterTransition
 import ru.aza1rat.marketsimapp.core.navigation.defaultExitTransition
 import ru.aza1rat.marketsimapp.core.navigation.defaultPopEnterTransition
 import ru.aza1rat.marketsimapp.core.navigation.defaultPopExitTransition
+import ru.aza1rat.marketsimapp.feature.auth.login.presentation.LoginEffect
 import ru.aza1rat.marketsimapp.feature.auth.login.presentation.LoginViewModel
 import ru.aza1rat.marketsimapp.feature.auth.login.ui.LoginScreen
 
 @Suppress("UnusedParameter")
-fun NavGraphBuilder.loginScreenNavigation(onNavigateToMain: () -> Unit) {
+fun NavGraphBuilder.loginScreenNavigation(
+    onNavigateToMain: () -> Unit,
+    onNavigateToRegister: () -> Unit
+) {
     composable<LoginScreenRoute>(
         enterTransition = defaultEnterTransition,
         exitTransition = defaultExitTransition,
@@ -29,7 +33,9 @@ fun NavGraphBuilder.loginScreenNavigation(onNavigateToMain: () -> Unit) {
 
         LaunchedEffect(viewModel) {
             viewModel.effects.collect { effect ->
-                {
+                when (effect) {
+                    LoginEffect.NavigateToMain -> onNavigateToMain()
+                    LoginEffect.NavigateToRegister -> onNavigateToRegister()
                 }
             }
         }
