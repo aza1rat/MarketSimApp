@@ -26,7 +26,7 @@ fun MarketSimNavHost(
         authScreenNavigation(
             onNavigateToMain = { navController.navigateToMainScreenClearingAuth() },
             onNavigateToRegister = { navController.navigateToRegisterScreen() },
-            onNavigateToLogin = { navController.navigateBack() }
+            onNavigateToLogin = { navController.popBackStack() }
         )
         cartScreenNavigation()
         categoryScreenNavigation()

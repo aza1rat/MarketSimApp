@@ -50,6 +50,3 @@ fun NavController.navigateToTrackingScreen() {
     navigate(route = TrackingScreenRoute)
 }
 
-fun NavController.navigateBack() {
-    popBackStack()
-}
