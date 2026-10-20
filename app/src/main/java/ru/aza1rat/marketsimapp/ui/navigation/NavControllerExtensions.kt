@@ -49,4 +49,3 @@ fun NavController.navigateToProfileScreen() {
 fun NavController.navigateToTrackingScreen() {
     navigate(route = TrackingScreenRoute)
 }
-
