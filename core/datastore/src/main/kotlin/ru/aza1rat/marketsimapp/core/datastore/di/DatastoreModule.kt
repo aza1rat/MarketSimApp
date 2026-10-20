@@ -30,4 +30,12 @@ object DatastoreModule {
             load(null)
         }
     }
+
+    @Provides
+    fun provideCryptoManager(keystore: KeyStore): CryptoManager {
+        return CryptoManager(
+            keyProvider = CipherKeyProvider(keystore),
+            transformation = CryptoParameters.getTransformation()
+        )
+    }
 }
