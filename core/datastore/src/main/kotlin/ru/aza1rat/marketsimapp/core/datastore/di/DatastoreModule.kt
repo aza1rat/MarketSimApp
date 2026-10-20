@@ -23,6 +23,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatastoreModule {
+    private const val DATASTORE_PATH = "datastore/marketsimapp.preferences_pb"
+
     @Provides
     @Singleton
     fun provideKeyStore(): KeyStore {
@@ -32,10 +34,25 @@ object DatastoreModule {
     }
 
     @Provides
+    @Singleton
+    fun provideDatastore(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.create {
+            File(context.filesDir, DATASTORE_PATH)
+        }
+    }
+
+    @Provides
     fun provideCryptoManager(keystore: KeyStore): CryptoManager {
         return CryptoManager(
             keyProvider = CipherKeyProvider(keystore),
             transformation = CryptoParameters.getTransformation()
         )
+    }
+
+    @Provides
+    fun provideDataStoreClient(dataStore: DataStore<Preferences>): DataStoreClient {
+        return DataStoreClientImpl(dataStore)
     }
 }
