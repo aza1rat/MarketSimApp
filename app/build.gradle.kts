@@ -30,6 +30,7 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:datastore"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:cart"))
     implementation(project(":feature:category"))

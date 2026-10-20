@@ -55,4 +55,12 @@ object DatastoreModule {
     fun provideDataStoreClient(dataStore: DataStore<Preferences>): DataStoreClient {
         return DataStoreClientImpl(dataStore)
     }
+
+    @Provides
+    fun provideSessionStorage(cryptoManager: CryptoManager, dataStoreClient: DataStoreClient): SessionStorage {
+        return SessionStorageImpl(
+            cryptoManager = cryptoManager,
+            dataStoreClient = dataStoreClient
+        )
+    }
 }
