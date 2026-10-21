@@ -13,7 +13,7 @@ import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import ru.aza1rat.marketsimapp.core.network.TokenStorageImpl
+import ru.aza1rat.marketsimapp.core.network.TokenStorage
 import javax.inject.Singleton
 
 @Module
@@ -38,7 +38,7 @@ class NetworkModule {
     @Singleton
     @Provides
     @AuthorizedHttpClient
-    fun provideAuthClient(tokenStorage: TokenStorageImpl): HttpClient =
+    fun provideAuthClient(tokenStorage: TokenStorage): HttpClient =
         HttpClient(CIO) {
             install(HttpTimeout) {
                 connectTimeoutMillis = CONNECTION_TIMEOUT_MILLIS
