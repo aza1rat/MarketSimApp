@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,45 +23,40 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatastoreModule {
-    private const val DATASTORE_PATH = "datastore/marketsimapp.preferences_pb"
+abstract class DatastoreModule {
+    @Binds
+    internal abstract fun bindDataStoreClient(dataStoreClientImpl: DataStoreClientImpl): DataStoreClient
 
-    @Provides
-    @Singleton
-    fun provideKeyStore(): KeyStore {
-        return KeyStore.getInstance(CryptoParameters.PROVIDER).apply {
-            load(null)
+    @Binds
+    internal abstract fun bindSessionStorage(sessionStorageImpl: SessionStorageImpl): SessionStorage
+
+    companion object {
+        private const val DATASTORE_PATH = "datastore/marketsimapp.preferences_pb"
+
+        @Provides
+        @Singleton
+        fun provideKeyStore(): KeyStore {
+            return KeyStore.getInstance(CryptoParameters.PROVIDER).apply {
+                load(null)
+            }
         }
-    }
 
-    @Provides
-    @Singleton
-    fun provideDatastore(
-        @ApplicationContext context: Context
-    ): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create {
-            File(context.filesDir, DATASTORE_PATH)
+        @Provides
+        @Singleton
+        fun provideDatastore(
+            @ApplicationContext context: Context
+        ): DataStore<Preferences> {
+            return PreferenceDataStoreFactory.create {
+                File(context.filesDir, DATASTORE_PATH)
+            }
         }
-    }
 
-    @Provides
-    fun provideCryptoManager(keystore: KeyStore): CryptoManager {
-        return CryptoManager(
-            keyProvider = CipherKeyProvider(keystore),
-            transformation = CryptoParameters.getTransformation()
-        )
-    }
-
-    @Provides
-    fun provideDataStoreClient(dataStore: DataStore<Preferences>): DataStoreClient {
-        return DataStoreClientImpl(dataStore)
-    }
-
-    @Provides
-    fun provideSessionStorage(cryptoManager: CryptoManager, dataStoreClient: DataStoreClient): SessionStorage {
-        return SessionStorageImpl(
-            cryptoManager = cryptoManager,
-            dataStoreClient = dataStoreClient
-        )
+        @Provides
+        fun provideCryptoManager(keystore: KeyStore): CryptoManager {
+            return CryptoManager(
+                keyProvider = CipherKeyProvider(keystore),
+                transformation = CryptoParameters.getTransformation()
+            )
+        }
     }
 }
