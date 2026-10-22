@@ -2,6 +2,7 @@ package ru.aza1rat.marketsimapp.ui.navigation
 
 import MainScreenRoute
 import androidx.navigation.NavController
+import ru.aza1rat.marketsimapp.feature.auth.register.ui.navigation.RegisterScreenRoute
 import ru.aza1rat.marketsimapp.feature.auth.ui.AuthScreenRoute
 import ru.aza1rat.marketsimapp.feature.cart.ui.CartScreenRoute
 import ru.aza1rat.marketsimapp.feature.category.ui.CategoryScreenRoute
@@ -11,6 +12,10 @@ import ru.aza1rat.marketsimapp.feature.tracking.ui.TrackingScreenRoute
 
 fun NavController.navigateToAuthScreen() {
     navigate(route = AuthScreenRoute)
+}
+
+fun NavController.navigateToRegisterScreen() {
+    navigate(route = RegisterScreenRoute)
 }
 
 fun NavController.navigateToCartScreen() {

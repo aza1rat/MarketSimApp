@@ -1,0 +1,62 @@
+package ru.aza1rat.marketsimapp.core.datastore.di
+
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import ru.aza1rat.marketsimapp.core.datastore.DataStoreClientImpl
+import ru.aza1rat.marketsimapp.core.datastore.SessionStorageImpl
+import ru.aza1rat.marketsimapp.core.datastore.api.DataStoreClient
+import ru.aza1rat.marketsimapp.core.datastore.crypto.CipherKeyProvider
+import ru.aza1rat.marketsimapp.core.datastore.crypto.CryptoManager
+import ru.aza1rat.marketsimapp.core.datastore.crypto.CryptoParameters
+import ru.aza1rat.marketsimapp.core.session.api.SessionStorage
+import java.io.File
+import java.security.KeyStore
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class DatastoreModule {
+    @Binds
+    internal abstract fun bindDataStoreClient(dataStoreClientImpl: DataStoreClientImpl): DataStoreClient
+
+    @Binds
+    internal abstract fun bindSessionStorage(sessionStorageImpl: SessionStorageImpl): SessionStorage
+
+    companion object {
+        private const val DATASTORE_PATH = "datastore/marketsimapp.preferences_pb"
+
+        @Provides
+        @Singleton
+        fun provideKeyStore(): KeyStore {
+            return KeyStore.getInstance(CryptoParameters.PROVIDER).apply {
+                load(null)
+            }
+        }
+
+        @Provides
+        @Singleton
+        fun provideDatastore(
+            @ApplicationContext context: Context
+        ): DataStore<Preferences> {
+            return PreferenceDataStoreFactory.create {
+                File(context.filesDir, DATASTORE_PATH)
+            }
+        }
+
+        @Provides
+        fun provideCryptoManager(keystore: KeyStore): CryptoManager {
+            return CryptoManager(
+                keyProvider = CipherKeyProvider(keystore),
+                transformation = CryptoParameters.getTransformation()
+            )
+        }
+    }
+}
