@@ -1,4 +1,4 @@
-package ru.aza1rat.marketsimapp.feature.auth.utils
+package ru.aza1rat.marketsimapp.feature.auth.domain
 
 import java.util.regex.Pattern
 

@@ -1,8 +1,9 @@
-package ru.aza1rat.marketsimapp.feature.auth.domain.model
+package ru.aza1rat.marketsimapp.feature.auth.data
 
 import ru.aza1rat.marketsimapp.core.network.codes.BAD_REQUEST_ERROR
 import ru.aza1rat.marketsimapp.core.network.codes.SERVER_ERROR
 import ru.aza1rat.marketsimapp.core.network.codes.UNAUTHORIZED_ERROR
+import ru.aza1rat.marketsimapp.feature.auth.domain.model.AuthError
 
 fun Int.toError(errorMessage: String? = null): AuthError {
     return when {

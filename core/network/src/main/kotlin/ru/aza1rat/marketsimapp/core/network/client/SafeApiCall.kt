@@ -2,7 +2,6 @@ package ru.aza1rat.marketsimapp.core.network.client
 
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.statement.HttpResponse
-import io.ktor.utils.io.CancellationException
 import kotlinx.io.IOException
 import kotlinx.serialization.SerializationException
 import ru.aza1rat.marketsimapp.core.network.dto.Response
@@ -20,8 +19,6 @@ suspend fun <T> safeApiCall(
             is Response.FailedResponseDto -> NetworkResult.HttpError(data, statusCode)
             else -> error(UNEXPECTED_TYPE_MESSAGE)
         }
-    } catch (e: CancellationException) {
-        throw e
     } catch (e: HttpRequestTimeoutException) {
         NetworkResult.Timeout
     } catch (e: SerializationException) {

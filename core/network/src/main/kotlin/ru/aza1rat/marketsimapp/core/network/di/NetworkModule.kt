@@ -50,6 +50,7 @@ class NetworkModule {
             }
             install(Auth) {
                 bearer {
+                    sendWithoutRequest { true }
                     loadTokens {
                         val token = tokenStorage.token
 
