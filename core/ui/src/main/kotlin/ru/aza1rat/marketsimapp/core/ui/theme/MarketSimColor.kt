@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 @Immutable
 data class MarketSimColor(
     val primary: Color,
+    val primaryDisabled: Color,
     val onPrimary: Color,
     val error: Color,
     val secondaryContainer: Color,
@@ -21,6 +22,7 @@ data class MarketSimColor(
 
 internal val LightPalette = MarketSimColor(
     primary = LimeYellow,
+    primaryDisabled = Gray100,
     onPrimary = NearBlack,
     error = RedOrange,
     secondaryContainer = OffWhite,
@@ -35,6 +37,7 @@ internal val LightPalette = MarketSimColor(
 
 internal val DarkPalette = MarketSimColor(
     primary = LimeYellow,
+    primaryDisabled = Gray700,
     onPrimary = NearBlack,
     error = RedOrange,
     secondaryContainer = Gray700,
