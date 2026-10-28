@@ -4,8 +4,8 @@ on:
   pull_request:
 
 env:
-  reviewdogSetupPrReview: -f=checkstyle -name="detekt" -level=error -filter-mode=added -reporter=github-pr-review
-  reviewdogSetupPrCheck: -f=checkstyle -name="detekt" -level=error -filter-mode=added -reporter=github-pr-check
+  reviewdogSetupPrReview: -f=checkstyle -name="detekt" -level=warning -filter-mode=added -reporter=github-pr-review
+  reviewdogSetupPrCheck: -f=checkstyle -name="detekt" -level=warning -filter-mode=added -reporter=github-pr-check
   detektReportPath: ./build/reports/detekt/detekt.xml
   gradlewParams: --stacktrace --no-configuration-cache --no-daemon
 

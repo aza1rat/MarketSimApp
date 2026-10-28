@@ -25,5 +25,6 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.ktor.client.core)
     ksp(libs.google.dagger.hilt.android.compiler)
 }
