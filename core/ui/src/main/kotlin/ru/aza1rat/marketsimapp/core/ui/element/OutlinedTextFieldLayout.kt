@@ -8,6 +8,7 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.OutputTransformation
@@ -26,9 +27,8 @@ import ru.aza1rat.marketsimapp.core.ui.theme.MarketSimTheme
 @Composable
 fun OutlinedTextFieldLayout(
     textFieldState: TextFieldState,
-    label: String,
+    placeholderText: String,
     modifier: Modifier = Modifier,
-    isError: Boolean = false,
     errorText: String? = null,
     outputTransformation: OutputTransformation? = null,
     keyboardType: KeyboardType = KeyboardType.Unspecified,
@@ -36,17 +36,18 @@ fun OutlinedTextFieldLayout(
     imeAction: ImeAction = ImeAction.Unspecified,
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
+    val isError = errorText != null
     Column(modifier = modifier) {
         OutlinedTextField(
             state = textFieldState,
-            modifier = Modifier.background(
+            modifier = Modifier.fillMaxWidth().background(
                 color = MarketSimTheme.colors.secondaryContainer,
                 shape = MarketSimTheme.roundedShapes.roundedMedium
             ),
             textStyle = MarketSimTheme.typography.bodySmall,
             placeholder = {
                 Text(
-                    text = label,
+                    text = placeholderText,
                     color = MarketSimTheme.colors.onSecondaryContainer,
                     style = MarketSimTheme.typography.bodySmall
                 )
@@ -75,22 +76,30 @@ fun OutlinedTextFieldLayout(
                 end = if (trailingIcon == null) MarketSimTheme.dimens.spacingMediumPlus else 0.dp,
             )
         )
-        AnimatedVisibility(
-            visible = isError,
-            modifier = Modifier.padding(
-                top = MarketSimTheme.dimens.spacingTiny,
-                start = MarketSimTheme.dimens.spacingMediumPlus,
-                end = MarketSimTheme.dimens.spacingMediumPlus
-            ),
-            enter = fadeIn() + expandIn(),
-            exit = fadeOut() + shrinkOut()
-        ) {
-            Text(
-                text = errorText ?: "",
-                color = MarketSimTheme.colors.error,
-                style = MarketSimTheme.typography.bodySmall,
-                maxLines = 2
-            )
-        }
+        AnimatedErrorText(isError = isError, errorText = errorText)
+    }
+}
+
+@Composable
+private fun AnimatedErrorText(
+    isError: Boolean,
+    errorText: String?
+) {
+    AnimatedVisibility(
+        visible = isError,
+        modifier = Modifier.fillMaxWidth().padding(
+            top = MarketSimTheme.dimens.spacingTiny,
+            start = MarketSimTheme.dimens.spacingMediumPlus,
+            end = MarketSimTheme.dimens.spacingMediumPlus
+        ),
+        enter = fadeIn() + expandIn(),
+        exit = fadeOut() + shrinkOut()
+    ) {
+        Text(
+            text = errorText ?: "",
+            color = MarketSimTheme.colors.error,
+            style = MarketSimTheme.typography.bodySmall,
+            maxLines = 2
+        )
     }
 }

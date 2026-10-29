@@ -14,17 +14,15 @@ import ru.aza1rat.marketsimapp.core.ui.theme.MarketSimTheme
 @Composable
 fun AuthOutlinedTextField(
     textFieldState: TextFieldState,
-    label: String,
+    placeholderText: String,
     modifier: Modifier = Modifier,
-    isError: Boolean = false,
     errorText: String? = null,
     imeAction: ImeAction = ImeAction.Next
 ) {
     OutlinedTextFieldLayout(
         textFieldState = textFieldState,
-        label = label,
+        placeholderText = placeholderText,
         modifier = modifier,
-        isError = isError,
         errorText = errorText,
         keyboardType = KeyboardType.Email,
         imeAction = imeAction,
@@ -37,9 +35,8 @@ fun AuthOutlinedTextField(
 private fun AuthOutlinedTextFieldPreview() {
     MarketSimTheme {
         AuthOutlinedTextField(
-            label = "Логин",
+            placeholderText = "Логин",
             textFieldState = rememberTextFieldState(),
-            isError = false,
         )
     }
 }
@@ -49,9 +46,8 @@ private fun AuthOutlinedTextFieldPreview() {
 private fun AuthOutlinedTextFieldErrorPreview() {
     MarketSimTheme {
         AuthOutlinedTextField(
-            label = "Логин",
+            placeholderText = "Логин",
             textFieldState = rememberTextFieldState(),
-            isError = true,
             errorText = "Текст ошибки"
         )
     }
