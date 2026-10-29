@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import ru.aza1rat.marketsimapp.core.ui.theme.MarketSimTheme
 
 @Composable
@@ -21,14 +22,18 @@ fun PrimaryAuthButton(
 ) {
     val buttonEnabled = if (enabled) !isLoading else false
     val disabledContainerColor = if (!enabled) {
-        MarketSimTheme.colors.primaryDisabled
+        MarketSimTheme.colors.primary.copy(
+            alpha = 0.7f
+        )
     } else {
         MarketSimTheme.colors.primary
     }
     val buttonTextColor = if (enabled) {
         MarketSimTheme.colors.onPrimary
     } else {
-        MarketSimTheme.colors.onSecondaryContainer
+        MarketSimTheme.colors.onPrimary.copy(
+            alpha = 0.7f
+        )
     }
     Button(
         onClick = onClick,
@@ -44,7 +49,7 @@ fun PrimaryAuthButton(
             CircularProgressIndicator(
                 modifier = Modifier.size(MarketSimTheme.dimens.iconButtonMediumSize),
                 color = MarketSimTheme.colors.onPrimary,
-                strokeWidth = MarketSimTheme.dimens.spacingTiny
+                strokeWidth = 1.dp
             )
         } else {
             Text(
