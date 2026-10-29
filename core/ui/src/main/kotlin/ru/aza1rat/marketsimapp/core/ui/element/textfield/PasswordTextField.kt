@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,18 +26,23 @@ import ru.aza1rat.marketsimapp.core.ui.theme.MarketSimTheme
 @Composable
 fun PasswordTextField(
     textFieldState: TextFieldState,
-    label: String,
+    placeholderText: String,
     modifier: Modifier = Modifier,
-    isError: Boolean = false,
     errorText: String? = null,
     imeAction: ImeAction = ImeAction.Done,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
+    val contentDescription = stringResource(
+        if (passwordVisible) {
+            R.string.password_visibility_action_off
+        } else {
+            R.string.password_visibility_action_on
+        }
+    )
     OutlinedTextFieldLayout(
         textFieldState = textFieldState,
-        label = label,
+        placeholderText = placeholderText,
         modifier = modifier,
-        isError = isError,
         errorText = errorText,
         outputTransformation = if (passwordVisible) null else DefaultPasswordOutputTransformation,
         keyboardType = KeyboardType.Password,
@@ -55,7 +61,7 @@ fun PasswordTextField(
                         )
                     },
                     modifier = Modifier.size(MarketSimTheme.dimens.iconButtonSmallSize),
-                    contentDescription = null,
+                    contentDescription = contentDescription,
                     tint = MarketSimTheme.colors.onSecondaryContainer
                 )
             }
@@ -72,8 +78,7 @@ private fun PasswordTextFieldPreview() {
             rememberTextFieldState(initialText = "Пароль")
         PasswordTextField(
             textFieldState = state,
-            label = "Пароль",
-            isError = false
+            placeholderText = "Пароль",
         )
     }
 }
@@ -86,8 +91,7 @@ private fun PasswordTextFieldErrorPreview() {
             rememberTextFieldState(initialText = "Пароль")
         PasswordTextField(
             textFieldState = state,
-            label = "Пароль",
-            isError = true,
+            placeholderText = "Пароль",
             errorText = "Слабый пароль"
         )
     }
