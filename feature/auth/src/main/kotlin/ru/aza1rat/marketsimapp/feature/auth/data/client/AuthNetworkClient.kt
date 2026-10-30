@@ -5,9 +5,9 @@ import ru.aza1rat.marketsimapp.core.network.client.NetworkExecutor
 import ru.aza1rat.marketsimapp.core.network.client.NetworkResult
 import ru.aza1rat.marketsimapp.core.network.dto.Response
 import ru.aza1rat.marketsimapp.feature.auth.data.api.AuthApi
-import ru.aza1rat.marketsimapp.feature.auth.data.dto.LoginRequestDto
+import ru.aza1rat.marketsimapp.feature.auth.data.dto.AuthRequestDto
+import ru.aza1rat.marketsimapp.feature.auth.data.dto.LoginResponseDto
 import ru.aza1rat.marketsimapp.feature.auth.data.dto.MeRequestDto
-import ru.aza1rat.marketsimapp.feature.auth.data.dto.RegisterRequestDto
 import javax.inject.Inject
 
 class AuthNetworkClient @Inject constructor(
@@ -16,24 +16,24 @@ class AuthNetworkClient @Inject constructor(
 ) : NetworkClient {
     override suspend fun <T> doRequest(dto: Any): NetworkResult<Response> {
         return when (dto) {
-            is LoginRequestDto -> {
+            is AuthRequestDto.LoginRequestDto -> {
                 networkExecutor.execute(
                     request = authApi.loginUser(dto),
-                    serializer = LoginRequestDto.serializer()
+                    serializer = LoginResponseDto.serializer()
                 )
             }
 
-            is RegisterRequestDto -> {
+            is AuthRequestDto.RegisterRequestDto -> {
                 networkExecutor.execute(
                     request = authApi.registerUser(dto),
-                    serializer = RegisterRequestDto.serializer()
+                    serializer = LoginResponseDto.serializer()
                 )
             }
 
             is MeRequestDto -> {
                 networkExecutor.execute(
                     request = authApi.getUserInfo(dto),
-                    serializer = MeRequestDto.serializer()
+                    serializer = LoginResponseDto.serializer()
                 )
             }
 
