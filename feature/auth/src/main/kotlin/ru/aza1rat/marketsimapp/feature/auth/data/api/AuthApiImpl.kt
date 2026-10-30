@@ -2,14 +2,13 @@ package ru.aza1rat.marketsimapp.feature.auth.data.api
 
 import ru.aza1rat.marketsimapp.core.network.client.HttpMethod
 import ru.aza1rat.marketsimapp.core.network.client.NetworkRequest
-import ru.aza1rat.marketsimapp.feature.auth.data.dto.LoginRequestDto
+import ru.aza1rat.marketsimapp.feature.auth.data.dto.AuthRequestDto
 import ru.aza1rat.marketsimapp.feature.auth.data.dto.MeRequestDto
-import ru.aza1rat.marketsimapp.feature.auth.data.dto.RegisterRequestDto
 import javax.inject.Inject
 
 class AuthApiImpl @Inject constructor() : AuthApi {
 
-    override fun loginUser(dto: LoginRequestDto): NetworkRequest =
+    override fun loginUser(dto: AuthRequestDto.LoginRequestDto): NetworkRequest =
         NetworkRequest(
             method = HttpMethod.POST,
             path = LOGIN_PATH,
@@ -17,7 +16,7 @@ class AuthApiImpl @Inject constructor() : AuthApi {
             body = dto
         )
 
-    override fun registerUser(dto: RegisterRequestDto) =
+    override fun registerUser(dto: AuthRequestDto.RegisterRequestDto) =
         NetworkRequest(
             method = HttpMethod.POST,
             path = REGISTER_PATH,

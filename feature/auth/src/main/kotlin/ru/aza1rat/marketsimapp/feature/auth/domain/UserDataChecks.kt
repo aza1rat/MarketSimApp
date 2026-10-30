@@ -2,18 +2,18 @@ package ru.aza1rat.marketsimapp.feature.auth.domain
 
 import java.util.regex.Pattern
 
-fun String.isEmailValid(): Boolean {
-    val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"
-    val pattern = Pattern.compile(emailRegex)
+@Suppress("MaxLineLength")
+fun String.isLoginValid(): Boolean {
+    val loginRegex = """^(?:[a-zA-Zа-яА-ЯёЁ0-9_-]+(?:\.[a-zA-Zа-яА-ЯёЁ0-9_-]+)*|[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*@[a-zA-Zа-яА-ЯёЁ]+(?:-[a-zA-Zа-яА-ЯёЁ]+)*(?:\.[a-zA-Zа-яА-ЯёЁ]+(?:-[a-zA-Zа-яА-ЯёЁ]+)*)*\.[a-zA-Zа-яА-ЯёЁ]+)$"""
+    val pattern = Pattern.compile(loginRegex)
 
     return pattern.matcher(this).matches()
 }
 
-fun String.isPasswordWeak(minLength: Int) = length < minLength
-fun String.isPasswordLong(maxLength: Int) = length > maxLength
+fun String.isPasswordValid(): Boolean {
+    val passwordRegex =
+        """^(?=.{8,32}$)(?=.*[^\W\d_])(?=.*\d)(?=.*[^\w\s])[\p{L}\p{N}\p{P}\p{S}\p{Zs}]{8,32}$"""
+    val pattern = Pattern.compile(passwordRegex)
 
-fun validateCredentials(email: String, password: String, minLength: Int, maxLength: Int): Boolean {
-    val isEmailValid = email.isEmailValid()
-    val isPasswordLengthCorrect = password.isPasswordWeak(minLength) && password.isPasswordLong(maxLength)
-    return isEmailValid && isPasswordLengthCorrect
+    return pattern.matcher(this).matches()
 }

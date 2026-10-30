@@ -7,11 +7,13 @@ import ru.aza1rat.marketsimapp.feature.auth.domain.model.AuthError
 
 fun Int.toError(errorMessage: String? = null): AuthError {
     return when {
-        this == BAD_REQUEST_ERROR && errorMessage == USER_EXISTS_MESSAGE -> AuthError.UserAlreadyExists
-        this == BAD_REQUEST_ERROR && errorMessage == INVALID_CREDENTIALS -> AuthError.InvalidCredentials
+        this == BAD_REQUEST_ERROR && errorMessage == USER_EXISTS_MESSAGE ->
+            AuthError.CredentialsError.USER_ALREADY_EXISTS
+        this == BAD_REQUEST_ERROR && errorMessage == INVALID_CREDENTIALS ->
+            AuthError.CredentialsError.INVALID_CREDENTIALS
         this == UNAUTHORIZED_ERROR -> AuthError.Unauthorized
-        this >= SERVER_ERROR -> AuthError.ServerError
-        else -> AuthError.Unknown
+        this in SERVER_ERROR -> AuthError.ServerError
+        else -> AuthError.Unknown(errorMessage)
     }
 }
 
