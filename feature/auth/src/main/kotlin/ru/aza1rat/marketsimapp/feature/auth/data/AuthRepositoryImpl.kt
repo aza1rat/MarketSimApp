@@ -4,6 +4,7 @@ import jakarta.inject.Inject
 import ru.aza1rat.marketsimapp.core.domain.Result
 import ru.aza1rat.marketsimapp.core.network.client.NetworkResult
 import ru.aza1rat.marketsimapp.core.network.dto.Response
+import ru.aza1rat.marketsimapp.core.network.dto.toErrorMessages
 import ru.aza1rat.marketsimapp.core.network.dto.toErrorsString
 import ru.aza1rat.marketsimapp.feature.auth.data.client.AuthNetworkClient
 import ru.aza1rat.marketsimapp.feature.auth.data.dto.AuthRequestDto
@@ -60,12 +61,13 @@ class AuthRepositoryImpl @Inject constructor(val client: AuthNetworkClient) : Au
 
             is NetworkResult.HttpError -> {
                 val code = result.statusCode
+                val errorsList = result.response.errors?.toErrorMessages()
                 val error =
-                    result.response.errors.orEmpty().firstOrNull()?.let { code.toError(it) }
+                    errorsList.orEmpty().firstOrNull()?.let { code.toError(it) }
                 if (error != null) {
                     Result.Error<UserInfo, AuthError>(error)
                 } else {
-                    Result.Error<UserInfo, AuthError>(AuthError.Unknown(result.response.errors.toErrorsString()))
+                    Result.Error<UserInfo, AuthError>(AuthError.Unknown(errorsList.toErrorsString()))
                 }
             }
 

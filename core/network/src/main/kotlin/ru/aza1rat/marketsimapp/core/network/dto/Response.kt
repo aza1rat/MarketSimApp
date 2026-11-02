@@ -1,6 +1,7 @@
 package ru.aza1rat.marketsimapp.core.network.dto
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 @Serializable
 sealed class Response {
@@ -18,6 +19,6 @@ sealed class Response {
         val title: String? = null,
         val status: Int?,
         val detail: String? = null,
-        val errors: List<String>?
+        val errors: JsonElement? = null
     ) : Response()
 }
