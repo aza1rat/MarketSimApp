@@ -46,7 +46,7 @@ Kotlin Coroutines & Coroutines Flow
 **Шифрование** - javax.crypto + Keystore  
 **Хранение** - DataStore Preferences
 ### CI
-**Проверки веток при мердже** - [branch_rules](https://github.com/aza1rat/MarketSimApp/actions/workflows/branch_rules.yml) + [block-branch-merge](https://github.com/aza1rat/MarketSimApp/actions/workflows/block-branch-merge.yml)
+**Проверки веток при мердже** - [branch_rules](https://github.com/aza1rat/MarketSimApp/actions/workflows/branch_rules.yml) + [block-branch-merge](https://github.com/aza1rat/MarketSimApp/actions/workflows/block-branch-merge.yml)  
 **Статический анализ кода** - [detekt-check](https://github.com/aza1rat/MarketSimApp/actions/workflows/detekt-check.yml)
 
 ### Сборка
