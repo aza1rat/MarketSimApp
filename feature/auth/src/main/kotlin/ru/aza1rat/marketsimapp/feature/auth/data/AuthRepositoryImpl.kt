@@ -9,12 +9,13 @@ import ru.aza1rat.marketsimapp.core.network.dto.toErrorsString
 import ru.aza1rat.marketsimapp.feature.auth.data.client.AuthNetworkClient
 import ru.aza1rat.marketsimapp.feature.auth.data.dto.AuthRequestDto
 import ru.aza1rat.marketsimapp.feature.auth.data.dto.LoginResponseDto
+import ru.aza1rat.marketsimapp.feature.auth.data.mapper.toError
 import ru.aza1rat.marketsimapp.feature.auth.data.mapper.toUserInfoDomain
 import ru.aza1rat.marketsimapp.feature.auth.domain.AuthRepository
-import ru.aza1rat.marketsimapp.feature.auth.domain.isLoginValid
-import ru.aza1rat.marketsimapp.feature.auth.domain.isPasswordValid
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.AuthError
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.UserInfo
+import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isLoginValid
+import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isPasswordValid
 
 class AuthRepositoryImpl @Inject constructor(val client: AuthNetworkClient) : AuthRepository {
     override suspend fun login(loginDto: AuthRequestDto.LoginRequestDto): Result<UserInfo, AuthError> {
@@ -49,7 +50,13 @@ class AuthRepositoryImpl @Inject constructor(val client: AuthNetworkClient) : Au
             is NetworkResult.Success<*> -> {
                 val resultResponseDto = result.data as? Response.ResultResponseDto<*>
                 val resultDto = resultResponseDto?.data as? LoginResponseDto
-                val user = resultDto?.toUserInfoDomain()
+
+                val user = try {
+                    resultDto?.toUserInfoDomain()
+                } catch (e: IllegalArgumentException) {
+                    return Result.Error<UserInfo, AuthError>(AuthError.Unknown(e.message))
+                }
+
                 if (user == null) {
                     val code = result.statusCode
                     val message = resultResponseDto?.message
@@ -62,8 +69,7 @@ class AuthRepositoryImpl @Inject constructor(val client: AuthNetworkClient) : Au
             is NetworkResult.HttpError -> {
                 val code = result.statusCode
                 val errorsList = result.response.errors?.toErrorMessages()
-                val error =
-                    errorsList.orEmpty().firstOrNull()?.let { code.toError(it) }
+                val error = errorsList.orEmpty().firstOrNull()?.let { code.toError(it) }
                 if (error != null) {
                     Result.Error<UserInfo, AuthError>(error)
                 } else {

@@ -1,4 +1,4 @@
-package ru.aza1rat.marketsimapp.feature.auth.data
+package ru.aza1rat.marketsimapp.feature.auth.data.mapper
 
 import ru.aza1rat.marketsimapp.core.network.codes.BAD_REQUEST_ERROR
 import ru.aza1rat.marketsimapp.core.network.codes.SERVER_ERROR

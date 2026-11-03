@@ -10,7 +10,7 @@ fun CredentialsUser.toLoginRequest() = AuthRequestDto.LoginRequestDto(
 
 fun CredentialsUser.toRegisterRequest() = AuthRequestDto.RegisterRequestDto(
     firstName = this.email.substringBefore('@'),
-    lastName = this.email.substringBefore('@'),
+    lastName = "_",
     email = this.email.normalizeLogin(),
     password = this.password,
 )
