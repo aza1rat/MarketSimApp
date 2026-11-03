@@ -3,6 +3,9 @@ package ru.aza1rat.marketsimapp.feature.auth.data.mapper
 import ru.aza1rat.marketsimapp.feature.auth.data.dto.LoginResponseDto
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.UserInfo
 
-fun LoginResponseDto.toUserInfoDomain(): Result<UserInfo> = this.user.firstName?.let {
-    Result.success(UserInfo(id = this.user.id, firstName = this.user.firstName))
-} ?: Result.failure(IllegalArgumentException("Имя не определено"))
+fun LoginResponseDto.toUserInfoDomain(): UserInfo {
+    val firstName = checkNotNull(user.firstName) {
+        "Обязательное поле 'firstName' равно null"
+    }
+    return UserInfo(id = user.id, firstName = firstName)
+}

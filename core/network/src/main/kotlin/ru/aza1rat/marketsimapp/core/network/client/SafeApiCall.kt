@@ -15,8 +15,19 @@ suspend fun <T> safeApiCall(
         val networkResult = request()
         val statusCode = networkResult.status.value
         when (val data = parse(networkResult)) {
-            is Response.ResultResponseDto<*> -> NetworkResult.Success(data, statusCode)
-            is Response.FailedResponseDto -> NetworkResult.HttpError(data, statusCode)
+            is Response.ResultResponseDto<*> -> NetworkResult.Success(
+                data = data,
+                statusCode = statusCode,
+                errors = data.message
+            )
+
+            is Response.FailedResponseDto -> {
+                NetworkResult.HttpError(
+                    response = data,
+                    statusCode = statusCode
+                )
+            }
+
             else -> error(UNEXPECTED_TYPE_MESSAGE)
         }
     } catch (e: HttpRequestTimeoutException) {

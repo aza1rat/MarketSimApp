@@ -15,10 +15,10 @@ sealed class Response {
 
     @Serializable
     data class FailedResponseDto(
-        val type: String?,
-        val title: String?,
+        val type: String? = null,
+        val title: String? = null,
         val status: Int?,
-        val detail: String?,
-        val errors: JsonElement?
+        val detail: String? = null,
+        val errors: JsonElement? = null
     ) : Response()
 }
