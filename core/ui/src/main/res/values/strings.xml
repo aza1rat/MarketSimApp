@@ -2,4 +2,9 @@
 <resources>
     <string name="password_visibility_action_on">Показать пароль</string>
     <string name="password_visibility_action_off">Скрыть пароль</string>
+    <string name="error_request_timeout">Запрос шел слишком долго и заблудился. Попробуйте еще раз</string>
+    <string name="error_connection">Кажется, пропал интернет. Проверьте подключение к сети</string>
+    <string name="error_serialization">Что-то пошло не так при чтении данных. Перезапустите приложение</string>
+    <string name="error_server">Ой, на сервере неполадки. Мы уже разбираемся, а вы пока отдохните</string>
+    <string name="error_unauthorized">Похоже, вас разлогинило. Пожалуйста, зайдите в аккаунт снова</string>
 </resources>
