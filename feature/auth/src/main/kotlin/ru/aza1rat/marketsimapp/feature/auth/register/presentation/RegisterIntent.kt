@@ -4,10 +4,8 @@ import ru.aza1rat.marketsimapp.core.mvi.MviIntent
 
 sealed class RegisterIntent : MviIntent {
     data class LoginChanged(val login: String) : RegisterIntent()
-    data class PasswordChanged(val password: String) : RegisterIntent()
-    data class ConfirmPasswordChanged(val confirmPassword: String) : RegisterIntent()
-    data object ConfirmPasswordUnfocused : RegisterIntent()
+    data class PasswordChanged(val password: String, val confirmPassword: String) : RegisterIntent()
     data class AgreementChecked(val checked: Boolean = false) : RegisterIntent()
-    data object SubmitClicked : RegisterIntent()
+    data class SubmitClicked(val login: String, val password: String) : RegisterIntent()
     data object BackClicked : RegisterIntent()
 }
