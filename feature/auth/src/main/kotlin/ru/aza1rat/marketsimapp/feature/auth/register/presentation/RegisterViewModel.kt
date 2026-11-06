@@ -3,14 +3,20 @@ package ru.aza1rat.marketsimapp.feature.auth.register.presentation
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.aza1rat.marketsimapp.core.domain.Result
 import ru.aza1rat.marketsimapp.core.mvi.MviViewModel
 import ru.aza1rat.marketsimapp.core.ui.text.UiText
 import ru.aza1rat.marketsimapp.feature.auth.R
+import ru.aza1rat.marketsimapp.feature.auth.data.mapper.normalizeLogin
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.AuthError
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.CredentialsUser
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.UserInfo
+import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isLoginValid
+import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isPasswordValid
 import ru.aza1rat.marketsimapp.feature.auth.presentation.asUiText
 import ru.aza1rat.marketsimapp.feature.auth.register.domain.RegisterUserAuthUseCase
 
@@ -20,30 +26,72 @@ class RegisterViewModel @Inject constructor(private val registerUserAuthUseCase:
         RegisterState()
     ) {
 
+    private val loginValidationChannel = Channel<String>(Channel.CONFLATED)
+    private val passwordValidationChannel = Channel<RegisterPasswordIntent>(Channel.CONFLATED)
+
+    init {
+        viewModelScope.launch {
+            loginValidationChannel.receiveAsFlow().collectLatest {
+                validateLogin(it)
+            }
+            passwordValidationChannel.receiveAsFlow().collectLatest {
+                validatePassword(it)
+            }
+        }
+    }
+
+    private fun validatePassword(registerPasswordIntent: RegisterPasswordIntent) {
+        val passwordValidated = registerPasswordIntent.password.isPasswordValid()
+        val confirmationValidated = registerPasswordIntent.password == registerPasswordIntent.confirmationPassword
+        val error = if (passwordValidated) {
+            null
+        } else {
+            AuthError.ValidationError.INVALID_PASSWORD.asUiText()
+        }
+        val confirmationError = if (error == null && !confirmationValidated) {
+            UiText.StringResource(
+                R.string.error_invalid_confirm_password
+            )
+        } else {
+            null
+        }
+        updateState {
+            it.copy(
+                passwordError = error,
+                confirmPasswordError = confirmationError,
+                passwordValidated = passwordValidated,
+                arePasswordEqual = confirmationValidated
+            )
+        }
+    }
+
+    private fun validateLogin(login: String) {
+        val loginValidated = login.normalizeLogin().isLoginValid()
+        val error = if (loginValidated) {
+            null
+        } else {
+            AuthError.ValidationError.INVALID_LOGIN.asUiText()
+        }
+        updateState {
+            it.copy(
+                loginError = error,
+                loginValidated = loginValidated
+            )
+        }
+    }
+
     override fun dispatch(
         intent: RegisterIntent
     ) {
         when (intent) {
-            is RegisterIntent.LoginChanged -> updateState {
-                it.copy(
-                    login = intent.login,
-                    loginError = null
-                )
-            }
+            is RegisterIntent.LoginChanged -> loginValidationChannel.trySend(intent.login)
 
-            is RegisterIntent.PasswordChanged -> updateState {
-                it.copy(
+            is RegisterIntent.PasswordChanged -> passwordValidationChannel.trySend(
+                RegisterPasswordIntent(
                     password = intent.password,
-                    passwordError = null
+                    confirmationPassword = intent.confirmPassword
                 )
-            }
-
-            is RegisterIntent.ConfirmPasswordChanged -> updateState {
-                it.copy(
-                    confirmPassword = intent.confirmPassword,
-                    confirmPasswordError = null
-                )
-            }
+            )
 
             is RegisterIntent.AgreementChecked -> updateState {
                 it.copy(
@@ -52,13 +100,11 @@ class RegisterViewModel @Inject constructor(private val registerUserAuthUseCase:
             }
 
             RegisterIntent.BackClicked -> handleIntent(intent)
-            RegisterIntent.ConfirmPasswordUnfocused -> updateState {
-                it.copy(
-                    confirmPasswordError = validateConfirmPassword(it)
-                )
-            }
 
-            RegisterIntent.SubmitClicked -> registerUser()
+            is RegisterIntent.SubmitClicked -> registerUser(
+                login = intent.login,
+                password = intent.password
+            )
         }
     }
 
@@ -71,26 +117,16 @@ class RegisterViewModel @Inject constructor(private val registerUserAuthUseCase:
         }
     }
 
-    private fun validateConfirmPassword(state: RegisterState): UiText? =
-        if (state.arePasswordsEqual) {
-            null
-        } else {
-            UiText.StringResource(
-                R.string.error_invalid_confirm_password
-            )
-        }
-
-    private fun registerUser() {
+    private fun registerUser(login: String, password: String) {
         if (state.value.isLoading) return
 
         viewModelScope.launch {
             updateState { it.copy(isLoading = true) }
 
-            val loginTrimmed = state.value.login.trim()
-            val passwordTrimmed = state.value.password
+            val loginTrimmed = login.trim()
             val userCredentials = CredentialsUser(
                 email = loginTrimmed,
-                password = passwordTrimmed
+                password = password
             )
             try {
                 when (val res = registerUserAuthUseCase.invoke(userCredentials)) {
@@ -121,4 +157,9 @@ class RegisterViewModel @Inject constructor(private val registerUserAuthUseCase:
             }
         }
     }
+
+    private data class RegisterPasswordIntent(
+        val password: String,
+        val confirmationPassword: String,
+    )
 }
