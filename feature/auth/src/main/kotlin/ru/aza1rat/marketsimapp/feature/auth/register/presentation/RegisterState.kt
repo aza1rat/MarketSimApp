@@ -1,24 +1,19 @@
 package ru.aza1rat.marketsimapp.feature.auth.register.presentation
 
+import androidx.compose.runtime.Immutable
 import ru.aza1rat.marketsimapp.core.mvi.MviState
 import ru.aza1rat.marketsimapp.core.ui.text.UiText
-import ru.aza1rat.marketsimapp.feature.auth.data.mapper.normalizeLogin
-import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isLoginValid
-import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isPasswordValid
 
+@Immutable
 data class RegisterState(
-    val login: String = "",
-    val password: String = "",
-    val confirmPassword: String = "",
     val loginError: UiText? = null,
     val passwordError: UiText? = null,
     val confirmPasswordError: UiText? = null,
     val isAgreementChecked: Boolean = false,
-    val isLoading: Boolean = false
-) : MviState {
-    val arePasswordsEqual: Boolean
-        get() = password == confirmPassword
-    val isSubmitEnabled: Boolean
-        get() = login.normalizeLogin()
-            .isLoginValid() && password.isPasswordValid() && arePasswordsEqual && isAgreementChecked
-}
+    val isLoading: Boolean = false,
+    val loginValidated: Boolean = false,
+    val passwordValidated: Boolean = false,
+    val arePasswordEqual: Boolean = false,
+    val isSubmitEnabled: Boolean =
+        loginValidated && passwordValidated && arePasswordEqual && isAgreementChecked
+) : MviState
