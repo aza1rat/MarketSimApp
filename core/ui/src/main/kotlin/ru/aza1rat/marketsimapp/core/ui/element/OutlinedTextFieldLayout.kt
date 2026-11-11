@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -29,9 +30,11 @@ fun OutlinedTextFieldLayout(
     textFieldState: TextFieldState,
     placeholderText: String,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     errorText: String? = null,
     outputTransformation: OutputTransformation? = null,
     keyboardType: KeyboardType = KeyboardType.Unspecified,
+    onKeyboardAction: KeyboardActionHandler? = null,
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.Default,
     imeAction: ImeAction = ImeAction.Unspecified,
     trailingIcon: @Composable (() -> Unit)? = null
@@ -44,6 +47,7 @@ fun OutlinedTextFieldLayout(
                 color = MarketSimTheme.colors.secondaryContainer,
                 shape = MarketSimTheme.roundedShapes.roundedMedium
             ),
+            enabled = enabled,
             textStyle = MarketSimTheme.typography.bodySmall,
             placeholder = {
                 Text(
@@ -59,6 +63,7 @@ fun OutlinedTextFieldLayout(
                 keyboardType = keyboardType,
                 imeAction = imeAction
             ),
+            onKeyboardAction = onKeyboardAction,
             lineLimits = lineLimits,
             shape = MarketSimTheme.roundedShapes.roundedMedium,
             colors = OutlinedTextFieldDefaults.colors(

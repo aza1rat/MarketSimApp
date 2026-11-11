@@ -1,6 +1,7 @@
 package ru.aza1rat.marketsimapp.core.ui.element.textfield
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -28,8 +29,10 @@ fun PasswordTextField(
     textFieldState: TextFieldState,
     placeholderText: String,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     errorText: String? = null,
     imeAction: ImeAction = ImeAction.Done,
+    onKeyboardAction: KeyboardActionHandler? = null
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
     val contentDescription = stringResource(
@@ -43,11 +46,13 @@ fun PasswordTextField(
         textFieldState = textFieldState,
         placeholderText = placeholderText,
         modifier = modifier,
+        enabled = enabled,
         errorText = errorText,
         outputTransformation = if (passwordVisible) null else DefaultPasswordOutputTransformation,
         keyboardType = KeyboardType.Password,
         lineLimits = TextFieldLineLimits.SingleLine,
         imeAction = imeAction,
+        onKeyboardAction = onKeyboardAction,
         trailingIcon = {
             IconButton(
                 onClick = { passwordVisible = !passwordVisible }
