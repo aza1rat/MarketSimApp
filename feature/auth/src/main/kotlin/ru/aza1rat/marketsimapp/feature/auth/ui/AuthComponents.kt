@@ -40,7 +40,109 @@ const val AUTH_PANEL_WIDTH_FRACTION_EXPANDED = 0.5f
 
 private const val AUTH_PANEL_WIDTH_FRACTION_EXPANDED_LESS = 1f
 
+@Composable
+fun AuthBackground(
+    windowSizeClass: WindowSizeClass,
+    verticalContent: @Composable BoxScope.() -> Unit,
+    dividedHorizontalContent: @Composable () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val painter = painterResource(R.drawable.bg_auth_720_480)
+    Box(modifier = modifier) {
+        Image(
+            painter = painter,
+            contentDescription = null,
+            contentScale = ContentScale.None,
+            alignment = Alignment.TopStart,
+            colorFilter = ColorFilter.tint(
+                MarketSimTheme.colors.onSecondaryContainer,
+                BlendMode.Multiply
+            ),
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
+                    bgAuthTransform(painter.intrinsicSize)
+                }
+                .clipToBounds()
+        )
+        if (windowSizeClass.isHeightAtLeastBreakpoint(
+                WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND
+            )
+        ) {
+            verticalContent()
+        } else {
+            dividedHorizontalContent()
+        }
+    }
+}
 
+@Composable
+fun AuthLogo(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+    ) {
+        Image(
+            painter = painterResource(R.drawable.logo_51_54),
+            contentDescription = null,
+            modifier = Modifier
+                .size(MarketSimTheme.dimens.edgePaddingLarge)
+                .align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun AuthTitle(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        style = MarketSimTheme.typography.headlineLarge,
+        color = MarketSimTheme.colors.headlineAuthText,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+fun AuthPanelBackground(
+    content: @Composable ColumnScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    verticalArrangement: Arrangement.Vertical = Arrangement.Top
+) {
+    Column(
+        modifier = modifier
+            .padding(
+                horizontal = MarketSimTheme.dimens.spacingMediumPlus,
+                vertical = MarketSimTheme.dimens.spacingSection
+            ),
+        verticalArrangement = verticalArrangement
+    ) {
+        content()
+    }
+}
+
+@Composable
+fun AuthTextButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    TextButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Text(
+            text = text,
+            style = MarketSimTheme.typography.bodySmall,
+            color = MarketSimTheme.colors.onSurface,
+            textDecoration = TextDecoration.Underline
+        )
+    }
+}
 
 private fun GraphicsLayerScope.bgAuthTransform(
     imageSize: Size
