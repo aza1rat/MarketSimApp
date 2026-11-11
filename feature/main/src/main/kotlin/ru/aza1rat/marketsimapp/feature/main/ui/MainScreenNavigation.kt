@@ -1,7 +1,10 @@
 package ru.aza1rat.marketsimapp.feature.main.ui
 
 import MainScreenRoute
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.aza1rat.marketsimapp.core.navigation.defaultEnterTransition
@@ -22,5 +25,6 @@ fun NavGraphBuilder.mainScreenNavigation() {
 
 @Suppress("EmptyFunctionBlock")
 @Composable
-fun MainScreenRouteContent() {
+fun MainScreenRouteContent(modifier: Modifier = Modifier) {
+    Text("Регистрация", modifier = modifier.fillMaxSize())
 }

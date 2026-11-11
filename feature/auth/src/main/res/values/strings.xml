@@ -5,4 +5,9 @@
     <string name="error_invalid_login">Введите корректный email или логин содержащий только буквы, цифры, дефис, подчеркивание или одиночные точки не на конце</string>
     <string name="error_invalid_credentials">Неправильный логин или пароль</string>
     <string name="error_user_already_exists">Этот логин уже занят. Попробуйте другой вариант</string>
+    <string name="login_welcome_message">С возвращением</string>
+    <string name="login_input_placeholder">Логин</string>
+    <string name="login_password_placeholder">Пароль</string>
+    <string name="login_register_navigation_button">Зарегистрироваться</string>
+    <string name="login_button">Войти</string>
 </resources>

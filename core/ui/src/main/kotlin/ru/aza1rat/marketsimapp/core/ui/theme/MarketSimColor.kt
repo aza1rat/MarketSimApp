@@ -16,7 +16,8 @@ data class MarketSimColor(
     val onSecondaryContainer: Color,
     val outline: Color,
     val outlineVariant: Color,
-    val tertiaryContainer: Color
+    val tertiaryContainer: Color,
+    val headlineAuthText: Color
 )
 
 internal val LightPalette = MarketSimColor(
@@ -30,7 +31,8 @@ internal val LightPalette = MarketSimColor(
     onSecondaryContainer = Gray500,
     outline = LimeYellow,
     outlineVariant = Gray300,
-    tertiaryContainer = Gray100
+    tertiaryContainer = Gray100,
+    headlineAuthText = White
 )
 
 internal val DarkPalette = MarketSimColor(
@@ -44,7 +46,8 @@ internal val DarkPalette = MarketSimColor(
     onSecondaryContainer = Gray500,
     outline = Gray600,
     outlineVariant = Gray700,
-    tertiaryContainer = Gray50
+    tertiaryContainer = Gray50,
+    headlineAuthText = White
 )
 
 internal val LocalThemeColors = staticCompositionLocalOf<MarketSimColor> {

@@ -11,5 +11,7 @@ data class LoginState(
     val isLoading: Boolean = false,
     val loginValidated: Boolean = false,
     val passwordValidated: Boolean = false,
-    val isSubmitEnabled: Boolean = loginValidated && passwordValidated
-) : MviState
+) : MviState {
+    val isSubmitEnabled: Boolean
+        get() = loginValidated && passwordValidated
+}

@@ -1,5 +1,6 @@
 package ru.aza1rat.marketsimapp.core.ui.element.textfield
 
+import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -16,17 +17,21 @@ fun AuthOutlinedTextField(
     textFieldState: TextFieldState,
     placeholderText: String,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     errorText: String? = null,
-    imeAction: ImeAction = ImeAction.Next
+    imeAction: ImeAction = ImeAction.Next,
+    onKeyboardAction: KeyboardActionHandler? = null
 ) {
     OutlinedTextFieldLayout(
         textFieldState = textFieldState,
         placeholderText = placeholderText,
         modifier = modifier,
+        enabled = enabled,
         errorText = errorText,
         keyboardType = KeyboardType.Email,
         imeAction = imeAction,
-        lineLimits = TextFieldLineLimits.SingleLine
+        lineLimits = TextFieldLineLimits.SingleLine,
+        onKeyboardAction = onKeyboardAction
     )
 }
 

@@ -14,6 +14,7 @@ data class RegisterState(
     val loginValidated: Boolean = false,
     val passwordValidated: Boolean = false,
     val arePasswordEqual: Boolean = false,
-    val isSubmitEnabled: Boolean =
-        loginValidated && passwordValidated && arePasswordEqual && isAgreementChecked
-) : MviState
+) : MviState {
+    val isSubmitEnabled: Boolean
+        get() = loginValidated && passwordValidated && arePasswordEqual && isAgreementChecked
+}
