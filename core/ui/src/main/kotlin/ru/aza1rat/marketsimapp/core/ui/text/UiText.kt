@@ -1,5 +1,6 @@
 package ru.aza1rat.marketsimapp.core.ui.text
 
+import android.content.res.Resources
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -22,6 +23,15 @@ sealed class UiText {
             is StringResource ->
                 @Suppress("SpreadOperator")
                 stringResource(id, *args.toTypedArray())
+        }
+    }
+
+    fun asString(resource: Resources): String {
+        return when (this) {
+            is DynamicString -> value
+            is StringResource ->
+                @Suppress("SpreadOperator")
+                resource.getString(id, *args.toTypedArray())
         }
     }
 }
