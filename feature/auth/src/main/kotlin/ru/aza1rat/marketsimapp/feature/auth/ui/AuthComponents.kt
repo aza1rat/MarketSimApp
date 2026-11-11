@@ -36,6 +36,10 @@ private const val BACKGROUND_ZOOM_FOCAL_Y = 0.532f
 
 private const val BACKGROUND_CROP_EXTRA_ZOOM = 1.12f
 
+const val AUTH_PANEL_WIDTH_FRACTION_EXPANDED = 0.5f
+
+private const val AUTH_PANEL_WIDTH_FRACTION_EXPANDED_LESS = 1f
+
 
 
 private fun GraphicsLayerScope.bgAuthTransform(
@@ -60,4 +64,13 @@ private fun GraphicsLayerScope.bgAuthTransform(
     translationY = -top
 }
 
-
+fun getAuthPanelWidthFraction(windowSizeClass: WindowSizeClass): Float {
+    return if (windowSizeClass.isWidthAtLeastBreakpoint(
+            WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
+        )
+    ) {
+        AUTH_PANEL_WIDTH_FRACTION_EXPANDED
+    } else {
+        AUTH_PANEL_WIDTH_FRACTION_EXPANDED_LESS
+    }
+}
