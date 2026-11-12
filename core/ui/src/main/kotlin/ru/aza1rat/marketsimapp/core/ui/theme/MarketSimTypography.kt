@@ -131,6 +131,13 @@ data class MarketSimTypography(
         lineHeight = 14.sp,
         letterSpacing = -(0.42).sp
     ),
+    val bodySmallMultiline: TextStyle = TextStyle(
+        fontFamily = urbanistFont,
+        fontWeight = mediumFontWeight,
+        fontSize = 14.sp,
+        lineHeight = 24.sp,
+        letterSpacing = -(0.42).sp
+    ),
     val labelLargeProminent: TextStyle = TextStyle(
         fontFamily = urbanistFont,
         fontWeight = mediumFontWeight,
