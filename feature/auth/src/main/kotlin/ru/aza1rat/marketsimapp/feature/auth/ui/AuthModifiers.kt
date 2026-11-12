@@ -28,13 +28,13 @@ fun Modifier.authPanelBackground(
 }
 
 fun Modifier.authHorizontalPanelBackground(
-    state: ScrollState,
+    scrollState: ScrollState,
     backgroundColor: Color,
 ): Modifier {
     return this.then(
         Modifier
             .fillMaxSize()
-            .verticalScroll(state)
+            .verticalScroll(scrollState)
             .authPanelBackground(backgroundColor = backgroundColor)
     )
 }

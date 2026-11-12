@@ -149,7 +149,7 @@ private fun DividedHorizontalContent(
         }
         AuthPanelBackground(
             modifier = Modifier.authHorizontalPanelBackground(
-                state = rememberScrollState(),
+                scrollState = rememberScrollState(),
                 backgroundColor = MarketSimTheme.colors.surface
             ),
             verticalArrangement = Arrangement.Center,
