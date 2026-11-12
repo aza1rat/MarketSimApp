@@ -242,7 +242,11 @@ private fun ColumnScope.RegisterPanel(
             }
         }
     )
-    // CheckBox
+    CheckBoxWithText(
+        checked = state.isAgreementChecked,
+        enabled = !state.isLoading,
+        onCheckedChange = { onIntent.invoke(RegisterIntent.AgreementChecked(it)) }
+    )
     PrimaryAuthButton(
         text = stringResource(R.string.register_button),
         enabled = state.isSubmitEnabled,
@@ -285,6 +289,70 @@ private fun TextFieldsInputCollection(
                     password = passwordTextFieldState.text.toString(),
                     confirmPassword = currentText.toString()
                 )
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun CheckBoxWithText(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    Row(modifier = modifier) {
+        RoundedCheckBox(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            enabled = enabled,
+            modifier = Modifier
+                .size(MarketSimTheme.dimens.iconButtonSmallSize)
+                .align(Alignment.CenterVertically)
+        )
+        Text(
+            text = stringResource(R.string.register_agreement_checkbox_label),
+            style = MarketSimTheme.typography.labelLarge,
+            color = MarketSimTheme.colors.onSurface,
+            modifier = Modifier.padding(start = MarketSimTheme.dimens.spacingExtraSmall)
+        )
+    }
+}
+
+@Composable
+private fun RoundedCheckBox(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    Box(
+        modifier = modifier
+            .minimumInteractiveComponentSize()
+            .clip(CircleShape)
+            .background(
+                color = if (checked) MarketSimTheme.colors.primary else Color.Transparent
+            )
+            .border(
+                width = if (checked) 0.dp else MarketSimTheme.dimens.borderWidth,
+                color = MarketSimTheme.colors.onSecondaryContainer,
+                shape = CircleShape
+            )
+            .toggleable(
+                value = checked,
+                onValueChange = {
+                    if (enabled) {
+                        onCheckedChange.invoke(it)
+                    }
+                },
+                role = Role.Checkbox
+            )
+    ) {
+        if (checked) {
+            Icon(
+                imageVector = Icons.Filled.Done,
+                contentDescription = "",
             )
         }
     }

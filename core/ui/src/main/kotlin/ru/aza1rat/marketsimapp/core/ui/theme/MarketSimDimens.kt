@@ -31,6 +31,7 @@ data class MarketSimDimens(
     val spacingBlockLarge: Dp = 60.dp,
     val navigationBarHeight: Dp = 80.dp,
     val chipButtonHeight: Dp = 20.dp,
+    val borderWidth: Dp = 1.dp,
     val iconButtonSmallSize: Dp = 16.dp,
     val iconButtonMediumSize: Dp = 24.dp,
     val iconButtonAverageSize: Dp = 32.dp,
