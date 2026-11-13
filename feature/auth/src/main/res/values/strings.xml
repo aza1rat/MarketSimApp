@@ -8,6 +8,11 @@
     <string name="login_welcome_message">С возвращением</string>
     <string name="login_input_placeholder">Логин</string>
     <string name="login_password_placeholder">Пароль</string>
+    <string name="login_password_confirmation_placeholder">Подтвердите пароль</string>
     <string name="login_register_navigation_button">Зарегистрироваться</string>
     <string name="login_button">Войти</string>
+    <string name="register_welcome_message">Давайте начнем</string>
+    <string name="register_welcome_submessage">Создайте профиль без каких-либо обязательств\nчтобы ознакомиться с продуктами</string>
+    <string name="register_agreement_checkbox_label">Я согласен с Условиями использования и Политикой конфиденциальности</string>
+    <string name="register_button">Зарегистрироваться</string>
 </resources>
