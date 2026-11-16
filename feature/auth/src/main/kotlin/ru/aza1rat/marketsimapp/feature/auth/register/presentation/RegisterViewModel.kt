@@ -162,12 +162,19 @@ class RegisterViewModel @Inject constructor(
                                 )
                             }
 
-                        else -> emitEffect(
-                            RegisterEffect.ShowError(
-                                error.asUiText()
+                            AuthError.CredentialsError.USER_ALREADY_EXISTS -> updateState {
+                                it.copy(
+                                    loginError = error.asUiText(),
+                                    loginValidated = false
+                                )
+                            }
+
+                            else -> emitEffect(
+                                RegisterEffect.ShowError(
+                                    error.asUiText()
+                                )
                             )
-                        )
-                    }
+                        }
 
                         is Result.Success<UserInfo, AuthError> -> emitEffect(RegisterEffect.NavigateToMain)
                     }
