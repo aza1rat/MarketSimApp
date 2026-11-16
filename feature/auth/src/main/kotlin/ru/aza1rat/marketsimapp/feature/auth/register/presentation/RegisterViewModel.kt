@@ -28,6 +28,7 @@ import ru.aza1rat.marketsimapp.feature.auth.register.domain.RegisterUserAuthUseC
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val registerUserAuthUseCase: RegisterUserAuthUseCase,
+    @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : MviViewModel<RegisterIntent, RegisterState, RegisterEffect>(
     RegisterState()
 ) {
@@ -145,20 +146,21 @@ class RegisterViewModel @Inject constructor(
                 email = loginTrimmed,
                 password = password
             )
-            try {
-                when (val res = registerUserAuthUseCase.invoke(userCredentials)) {
-                    is Result.Error<UserInfo, AuthError> -> when (val error = res.error) {
-                        AuthError.ValidationError.INVALID_PASSWORD -> updateState {
-                            it.copy(
-                                passwordError = error.asUiText()
-                            )
-                        }
+            withContext(ioDispatcher) {
+                try {
+                    when (val res = registerUserAuthUseCase.invoke(userCredentials)) {
+                        is Result.Error<UserInfo, AuthError> -> when (val error = res.error) {
+                            AuthError.ValidationError.INVALID_PASSWORD -> updateState {
+                                it.copy(
+                                    passwordError = error.asUiText()
+                                )
+                            }
 
-                        AuthError.ValidationError.INVALID_LOGIN -> updateState {
-                            it.copy(
-                                loginError = error.asUiText()
-                            )
-                        }
+                            AuthError.ValidationError.INVALID_LOGIN -> updateState {
+                                it.copy(
+                                    loginError = error.asUiText()
+                                )
+                            }
 
                         else -> emitEffect(
                             RegisterEffect.ShowError(
@@ -167,10 +169,11 @@ class RegisterViewModel @Inject constructor(
                         )
                     }
 
-                    is Result.Success<UserInfo, AuthError> -> emitEffect(RegisterEffect.NavigateToMain)
+                        is Result.Success<UserInfo, AuthError> -> emitEffect(RegisterEffect.NavigateToMain)
+                    }
+                } finally {
+                    updateState { it.copy(isLoading = false) }
                 }
-            } finally {
-                updateState { it.copy(isLoading = false) }
             }
         }
     }
