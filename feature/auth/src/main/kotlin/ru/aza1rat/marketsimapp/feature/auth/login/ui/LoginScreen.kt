@@ -192,7 +192,9 @@ private fun ColumnScope.AuthPanel(
         errorText = state.passwordError?.asString(),
         imeAction = ImeAction.Done,
         onKeyboardAction = {
-            onPasswordInputDone(state, onIntent, loginTextFieldState, passwordTextFieldState)
+            if (state.isSubmitEnabled) {
+                onSubmitAction(loginTextFieldState, passwordTextFieldState, onIntent)
+            }
         }
     )
     AuthTextButton(
@@ -207,30 +209,22 @@ private fun ColumnScope.AuthPanel(
         modifier = Modifier
             .authButton(paddingTop = MarketSimTheme.dimens.spacingExtraSmall),
         onClick = {
-            onIntent.invoke(
-                LoginIntent.SubmitClicked(
-                    login = loginTextFieldState.text.toString(),
-                    password = passwordTextFieldState.text.toString()
-                )
-            )
+            onSubmitAction(loginTextFieldState, passwordTextFieldState, onIntent)
         }
     )
 }
 
-private fun onPasswordInputDone(
-    state: LoginState,
-    onIntent: (LoginIntent) -> Unit,
+private fun onSubmitAction(
     loginTextFieldState: TextFieldState,
-    passwordTextFieldState: TextFieldState
+    passwordTextFieldState: TextFieldState,
+    onIntent: (LoginIntent) -> Unit
 ) {
-    if (state.isSubmitEnabled) {
-        onIntent.invoke(
-            LoginIntent.SubmitClicked(
-                login = loginTextFieldState.text.toString(),
-                password = passwordTextFieldState.text.toString()
-            )
+    onIntent.invoke(
+        LoginIntent.SubmitClicked(
+            login = loginTextFieldState.text.toString(),
+            password = passwordTextFieldState.text.toString()
         )
-    }
+    )
 }
 
 @Composable

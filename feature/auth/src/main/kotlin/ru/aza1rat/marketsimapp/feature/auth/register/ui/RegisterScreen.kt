@@ -238,7 +238,11 @@ private fun ColumnScope.RegisterPanel(
         imeAction = ImeAction.Done,
         onKeyboardAction = {
             if (state.isSubmitEnabled) {
-                // onSubmit
+                onSubmitAction(
+                    registerFields.loginTextFieldState,
+                    registerFields.passwordTextFieldState,
+                    onIntent
+                )
             }
         }
     )
@@ -253,7 +257,11 @@ private fun ColumnScope.RegisterPanel(
         isLoading = state.isLoading,
         modifier = Modifier.authButton(paddingTop = MarketSimTheme.dimens.spacingExtraLarge),
         onClick = {
-            // onSubmit
+            onSubmitAction(
+                registerFields.loginTextFieldState,
+                registerFields.passwordTextFieldState,
+                onIntent
+            )
         }
     )
 }
