@@ -366,3 +366,16 @@ private fun RoundedCheckBox(
     }
 }
 
+private fun onSubmitAction(
+    loginTextFieldState: TextFieldState,
+    passwordTextFieldState: TextFieldState,
+    onIntent: (RegisterIntent) -> Unit
+) {
+    onIntent.invoke(
+        RegisterIntent.SubmitClicked(
+            login = loginTextFieldState.text.toString(),
+            password = passwordTextFieldState.text.toString()
+        )
+    )
+}
+
