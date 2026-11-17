@@ -33,10 +33,19 @@ fun NavGraphBuilder.registerScreenNavigation(
         LaunchedEffect(viewModel) {
             viewModel.effects.collect { effect ->
                 when (effect) {
-                    RegisterEffect.NavigateToMain -> onNavigateToMain()
+                    RegisterEffect.NavigateToMain -> {
+                        autofillManager?.commit()
+                        onNavigateToMain()
+                    }
                     RegisterEffect.NavigateToLogin -> onNavigateToLogin()
                     is RegisterEffect.ShowError -> Log.d("AuthError", "${effect.message}")
                 }
+            }
+        }
+
+        DisposableEffect(autofillManager) {
+            onDispose {
+                autofillManager?.cancel()
             }
         }
 

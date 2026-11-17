@@ -60,8 +60,6 @@ import ru.aza1rat.marketsimapp.feature.auth.ui.authButton
 import ru.aza1rat.marketsimapp.feature.auth.ui.authHorizontalPanelBackground
 import ru.aza1rat.marketsimapp.feature.auth.ui.authHorizontalPanelFillWidth
 import ru.aza1rat.marketsimapp.feature.auth.ui.authPanelBackground
-import ru.aza1rat.marketsimapp.feature.auth.ui.authPasswordTextField
-import ru.aza1rat.marketsimapp.feature.auth.ui.authTextField
 import ru.aza1rat.marketsimapp.feature.auth.ui.getAuthPanelWidthFraction
 import ru.aza1rat.marketsimapp.feature.auth.ui.registerPasswordTextField
 import ru.aza1rat.marketsimapp.feature.auth.ui.registerTextField
@@ -216,7 +214,7 @@ private fun ColumnScope.RegisterPanel(
     AuthOutlinedTextField(
         textFieldState = registerFields.loginTextFieldState,
         placeholderText = stringResource(R.string.login_input_placeholder),
-        modifier = Modifier.authTextField(bottomPadding = MarketSimTheme.dimens.spacingMedium),
+        modifier = Modifier.registerTextField(bottomPadding = MarketSimTheme.dimens.spacingMedium),
         enabled = !state.isLoading,
         errorText = state.loginError?.asString(),
         imeAction = ImeAction.Next
@@ -224,7 +222,7 @@ private fun ColumnScope.RegisterPanel(
     PasswordTextField(
         textFieldState = registerFields.passwordTextFieldState,
         placeholderText = stringResource(R.string.login_password_placeholder),
-        modifier = Modifier.authPasswordTextField(bottomPadding = MarketSimTheme.dimens.spacingMedium),
+        modifier = Modifier.registerPasswordTextField(bottomPadding = MarketSimTheme.dimens.spacingMedium),
         enabled = !state.isLoading,
         errorText = state.passwordError?.asString(),
         imeAction = ImeAction.Next

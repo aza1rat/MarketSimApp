@@ -48,7 +48,18 @@ fun Modifier.authTextField(
     return this.then(
         Modifier.padding(bottom = bottomPadding)
             .semantics {
-                contentType = ContentType.EmailAddress
+                contentType = ContentType.EmailAddress + ContentType.Username
+            }
+    )
+}
+
+fun Modifier.registerTextField(
+    bottomPadding: Dp
+): Modifier {
+    return this.then(
+        Modifier.padding(bottom = bottomPadding)
+            .semantics {
+                contentType = ContentType.NewUsername
             }
     )
 }
@@ -60,6 +71,17 @@ fun Modifier.authPasswordTextField(
         Modifier.padding(bottom = bottomPadding)
             .semantics {
                 contentType = ContentType.Password
+            }
+    )
+}
+
+fun Modifier.registerPasswordTextField(
+    bottomPadding: Dp
+): Modifier {
+    return this.then(
+        Modifier.padding(bottom = bottomPadding)
+            .semantics {
+                contentType = ContentType.NewPassword
             }
     )
 }
