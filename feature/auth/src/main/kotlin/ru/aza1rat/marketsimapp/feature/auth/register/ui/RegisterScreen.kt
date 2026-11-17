@@ -392,3 +392,88 @@ private fun onSubmitAction(
     )
 }
 
+@PreviewScreenSizes
+@Composable
+private fun RegisterScreenPreview() {
+    RegisterScreen(
+        state = RegisterState(),
+        modifier = Modifier.fillMaxSize(),
+        onIntent = {}
+    )
+}
+
+@PreviewLightDark
+@Composable
+private fun RegisterScreenLightDark() {
+    RegisterScreen(
+        state = RegisterState(),
+        modifier = Modifier.fillMaxSize(),
+        onIntent = {}
+    )
+}
+
+@Preview
+@Composable
+private fun RegisterScreenPasswordInvalid() {
+    RegisterScreen(
+        loginTextFieldState = rememberTextFieldState(
+            "login"
+        ),
+        passwordTextFieldState = rememberTextFieldState(
+            "pa"
+        ),
+        state = RegisterState(
+            loginValidated = true,
+            passwordValidated = false,
+            passwordError = UiText.StringResource(R.string.error_invalid_password)
+        ),
+        modifier = Modifier.fillMaxSize(),
+        onIntent = {}
+    )
+}
+
+@Preview
+@Composable
+private fun RegisterScreenPasswordConfirmationInvalid() {
+    RegisterScreen(
+        loginTextFieldState = rememberTextFieldState(
+            "login"
+        ),
+        passwordTextFieldState = rememberTextFieldState(
+            "password1@"
+        ),
+        state = RegisterState(
+            loginValidated = true,
+            passwordValidated = true,
+            arePasswordEqual = false,
+            confirmPasswordError = UiText.StringResource(R.string.error_invalid_confirm_password),
+            isAgreementChecked = true
+        ),
+        modifier = Modifier.fillMaxSize(),
+        onIntent = {}
+    )
+}
+
+@Preview
+@Composable
+private fun RegisterScreenValidated() {
+    RegisterScreen(
+        loginTextFieldState = rememberTextFieldState(
+            "login"
+        ),
+        passwordTextFieldState = rememberTextFieldState(
+            "password1@"
+        ),
+        passwordConfirmationTextFieldState = rememberTextFieldState(
+            "password1@"
+        ),
+        state = RegisterState(
+            loginValidated = true,
+            passwordValidated = true,
+            arePasswordEqual = true,
+            isAgreementChecked = true
+        ),
+        modifier = Modifier.fillMaxSize(),
+        onIntent = {}
+    )
+}
