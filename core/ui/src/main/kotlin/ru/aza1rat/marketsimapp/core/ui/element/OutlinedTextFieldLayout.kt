@@ -6,9 +6,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.KeyboardActionHandler
@@ -90,21 +92,23 @@ private fun AnimatedErrorText(
     isError: Boolean,
     errorText: String?
 ) {
-    AnimatedVisibility(
-        visible = isError,
-        modifier = Modifier.fillMaxWidth().padding(
-            top = MarketSimTheme.dimens.spacingTiny,
-            start = MarketSimTheme.dimens.spacingMediumPlus,
-            end = MarketSimTheme.dimens.spacingMediumPlus
-        ),
-        enter = fadeIn() + expandIn(),
-        exit = fadeOut() + shrinkOut()
-    ) {
-        Text(
-            text = errorText ?: "",
-            color = MarketSimTheme.colors.error,
-            style = MarketSimTheme.typography.bodySmall,
-            maxLines = 2
-        )
+    Box(modifier = Modifier.height(MarketSimTheme.dimens.spacingLarge)) {
+        AnimatedVisibility(
+            visible = isError,
+            modifier = Modifier.fillMaxWidth().padding(
+                top = MarketSimTheme.dimens.spacingTiny,
+                start = MarketSimTheme.dimens.spacingMediumPlus,
+                end = MarketSimTheme.dimens.spacingMediumPlus
+            ),
+            enter = fadeIn() + expandIn(),
+            exit = fadeOut() + shrinkOut()
+        ) {
+            Text(
+                text = errorText ?: "",
+                color = MarketSimTheme.colors.error,
+                style = MarketSimTheme.typography.bodySmall,
+                maxLines = 2
+            )
+        }
     }
 }
