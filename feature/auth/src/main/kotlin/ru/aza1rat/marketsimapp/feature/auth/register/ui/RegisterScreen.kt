@@ -113,7 +113,7 @@ private fun BoxScope.VerticalContent(
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        // navigation
+        SizedTopNavigation(modifier = Modifier.fillMaxWidth(), onIntent = onIntent)
         AuthLogo(
             modifier = Modifier
                 .fillMaxWidth()
@@ -168,7 +168,7 @@ private fun DividedHorizontalContent(
                 .fillMaxHeight()
                 .authHorizontalPanelFillWidth()
         ) {
-            // navigation
+            SizedTopNavigation(modifier = Modifier.fillMaxWidth(), onIntent = onIntent)
             AuthLogo(modifier = Modifier.fillMaxWidth())
             AuthTitle(
                 text = stringResource(R.string.register_welcome_message),
@@ -302,6 +302,21 @@ private fun TextFieldsInputCollection(
     }
 }
 
+@Composable
+private fun SizedTopNavigation(modifier: Modifier = Modifier, onIntent: (RegisterIntent) -> Unit) {
+    TopNavigationBar(
+        modifier = modifier,
+        onNavigationColor = MarketSimTheme.colors.headlineAuthText,
+        navigationAction = {
+            onIntent.invoke(RegisterIntent.BackClicked)
+        },
+        windowInsets = WindowInsets(
+            top = MarketSimTheme.dimens.edgePaddingLarge,
+            left = MarketSimTheme.dimens.edgePaddingMedium,
+            right = MarketSimTheme.dimens.edgePaddingMedium
+        )
+    )
+}
 
 @Composable
 private fun CheckBoxWithText(
