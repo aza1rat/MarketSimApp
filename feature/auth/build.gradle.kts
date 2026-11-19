@@ -17,6 +17,7 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:domain"))
     implementation(project(":core:di"))
+    implementation(project(":core:session-api"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

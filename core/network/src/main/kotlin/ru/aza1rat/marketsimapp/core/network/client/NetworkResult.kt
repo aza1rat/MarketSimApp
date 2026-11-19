@@ -7,6 +7,7 @@ sealed interface NetworkResult<out T> {
     data class HttpError(val response: Response.FailedResponseDto, val statusCode: Int) :
         NetworkResult<Nothing>
 
+    data object AuthorizationRequired : NetworkResult<Nothing>
     data object ConnectionProblems : NetworkResult<Nothing>
     data object Timeout : NetworkResult<Nothing>
     data object SerializationError : NetworkResult<Nothing>
