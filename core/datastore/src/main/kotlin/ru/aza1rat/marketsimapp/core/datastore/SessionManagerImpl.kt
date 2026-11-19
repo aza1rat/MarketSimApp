@@ -7,7 +7,9 @@ import ru.aza1rat.marketsimapp.core.session.api.SessionManager
 import ru.aza1rat.marketsimapp.core.session.api.SessionStorage
 import ru.aza1rat.marketsimapp.core.session.dto.Session
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SessionManagerImpl @Inject constructor(private val sessionStorage: SessionStorage) :
     SessionManager {
     private val mutex = Mutex()

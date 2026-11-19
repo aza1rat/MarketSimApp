@@ -9,9 +9,11 @@ import ru.aza1rat.marketsimapp.core.datastore.crypto.CryptoManager
 import ru.aza1rat.marketsimapp.core.session.api.SessionStorage
 import ru.aza1rat.marketsimapp.core.session.dto.Session
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.time.Clock
 import kotlin.time.Instant
 
+@Singleton
 internal class SessionStorageImpl @Inject constructor(
     private val cryptoManager: CryptoManager,
     private val dataStoreClient: DataStoreClient
