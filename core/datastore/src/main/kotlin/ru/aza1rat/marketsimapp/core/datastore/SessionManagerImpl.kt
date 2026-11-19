@@ -13,24 +13,24 @@ class SessionManagerImpl @Inject constructor(private val sessionStorage: Session
     private val mutex = Mutex()
 
     override suspend fun getSession(): Session? {
-        return sessionStorage.getSession().first()
+        return sessionStorage.observeSession().first()
     }
 
     override suspend fun saveSession(session: Session) {
         mutex.withLock {
-            sessionStorage.setSession(session).first().getOrThrow()
+            sessionStorage.setSession(session).getOrThrow()
         }
     }
 
     override suspend fun handleUnauthorized(token: String) {
         mutex.withLock {
-            val currentSession = sessionStorage.getSession().first()
+            val currentSession = sessionStorage.observeSession().first()
 
             if (currentSession?.token != token) {
                 return
             }
 
-            sessionStorage.deleteSession().first().getOrThrow()
+            sessionStorage.deleteSession().getOrThrow()
         }
     }
 }

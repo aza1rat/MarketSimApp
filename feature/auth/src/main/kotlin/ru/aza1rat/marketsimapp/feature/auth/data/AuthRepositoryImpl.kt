@@ -92,6 +92,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private suspend fun setSession(loginResponseDto: LoginResponseDto?): Result.Error<UserInfo, AuthError>? {
         val session = try {
             loginResponseDto?.toSession()
