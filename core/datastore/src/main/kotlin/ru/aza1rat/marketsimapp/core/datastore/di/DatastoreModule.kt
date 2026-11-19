@@ -11,11 +11,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.aza1rat.marketsimapp.core.datastore.DataStoreClientImpl
+import ru.aza1rat.marketsimapp.core.datastore.SessionManagerImpl
 import ru.aza1rat.marketsimapp.core.datastore.SessionStorageImpl
 import ru.aza1rat.marketsimapp.core.datastore.api.DataStoreClient
 import ru.aza1rat.marketsimapp.core.datastore.crypto.CipherKeyProvider
 import ru.aza1rat.marketsimapp.core.datastore.crypto.CryptoManager
 import ru.aza1rat.marketsimapp.core.datastore.crypto.CryptoParameters
+import ru.aza1rat.marketsimapp.core.session.api.SessionManager
 import ru.aza1rat.marketsimapp.core.session.api.SessionStorage
 import java.io.File
 import java.security.KeyStore
@@ -29,6 +31,9 @@ abstract class DatastoreModule {
 
     @Binds
     internal abstract fun bindSessionStorage(sessionStorageImpl: SessionStorageImpl): SessionStorage
+
+    @Binds
+    internal abstract fun bindSessionManager(sessionManagerImpl: SessionManagerImpl): SessionManager
 
     companion object {
         private const val DATASTORE_PATH = "datastore/marketsimapp.preferences_pb"

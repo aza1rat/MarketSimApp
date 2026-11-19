@@ -1,15 +1,18 @@
 package ru.aza1rat.marketsimapp.feature.auth.data
 
+import io.ktor.utils.io.CancellationException
 import jakarta.inject.Inject
 import ru.aza1rat.marketsimapp.core.domain.Result
 import ru.aza1rat.marketsimapp.core.network.client.NetworkResult
 import ru.aza1rat.marketsimapp.core.network.dto.Response
 import ru.aza1rat.marketsimapp.core.network.dto.toErrorMessages
 import ru.aza1rat.marketsimapp.core.network.dto.toErrorsString
+import ru.aza1rat.marketsimapp.core.session.api.SessionManager
 import ru.aza1rat.marketsimapp.feature.auth.data.client.AuthNetworkClient
 import ru.aza1rat.marketsimapp.feature.auth.data.dto.AuthRequestDto
 import ru.aza1rat.marketsimapp.feature.auth.data.dto.LoginResponseDto
 import ru.aza1rat.marketsimapp.feature.auth.data.mapper.toError
+import ru.aza1rat.marketsimapp.feature.auth.data.mapper.toSession
 import ru.aza1rat.marketsimapp.feature.auth.data.mapper.toUserInfoDomain
 import ru.aza1rat.marketsimapp.feature.auth.domain.AuthRepository
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.AuthError
@@ -17,7 +20,10 @@ import ru.aza1rat.marketsimapp.feature.auth.domain.model.UserInfo
 import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isLoginValid
 import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isPasswordValid
 
-class AuthRepositoryImpl @Inject constructor(val client: AuthNetworkClient) : AuthRepository {
+class AuthRepositoryImpl @Inject constructor(
+    private val client: AuthNetworkClient,
+    private val sessionManager: SessionManager
+) : AuthRepository {
     override suspend fun login(loginDto: AuthRequestDto.LoginRequestDto): Result<UserInfo, AuthError> {
         validateCredentials(loginDto.email, loginDto.password)?.let {
             return it
@@ -62,6 +68,8 @@ class AuthRepositoryImpl @Inject constructor(val client: AuthNetworkClient) : Au
                     val message = resultResponseDto?.message
                     Result.Error<UserInfo, AuthError>(code.toError(message))
                 } else {
+                    setSession(resultDto)?.let { return it }
+
                     Result.Success<UserInfo, AuthError>(user)
                 }
             }
@@ -77,9 +85,29 @@ class AuthRepositoryImpl @Inject constructor(val client: AuthNetworkClient) : Au
                 }
             }
 
+            NetworkResult.AuthorizationRequired -> Result.Error<UserInfo, AuthError>(AuthError.Unauthorized)
             NetworkResult.ConnectionProblems -> Result.Error<UserInfo, AuthError>(AuthError.NetworkError.CONNECTION)
             NetworkResult.SerializationError -> Result.Error<UserInfo, AuthError>(AuthError.SerializationError)
             NetworkResult.Timeout -> Result.Error<UserInfo, AuthError>(AuthError.NetworkError.REQUEST_TIME_OUT)
+        }
+    }
+
+    private suspend fun setSession(loginResponseDto: LoginResponseDto?): Result.Error<UserInfo, AuthError>? {
+        val session = try {
+            loginResponseDto?.toSession()
+        } catch (e: IllegalArgumentException) {
+            return Result.Error<UserInfo, AuthError>(AuthError.Unknown(e.message))
+        }
+
+        return try {
+            session?.let {
+                sessionManager.saveSession(it)
+            }
+            null
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.Error<UserInfo, AuthError>(AuthError.Unknown(e.message))
         }
     }
 }
