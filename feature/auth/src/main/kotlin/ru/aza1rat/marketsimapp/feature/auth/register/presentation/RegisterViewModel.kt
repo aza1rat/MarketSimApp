@@ -3,10 +3,13 @@ package ru.aza1rat.marketsimapp.feature.auth.register.presentation
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.aza1rat.marketsimapp.core.di.IoDispatcher
 import ru.aza1rat.marketsimapp.core.domain.Result
 import ru.aza1rat.marketsimapp.core.mvi.MviViewModel
 import ru.aza1rat.marketsimapp.core.ui.text.UiText
@@ -17,33 +20,52 @@ import ru.aza1rat.marketsimapp.feature.auth.domain.model.CredentialsUser
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.UserInfo
 import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isLoginValid
 import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isPasswordValid
+import ru.aza1rat.marketsimapp.feature.auth.presentation.UiValidationResult
 import ru.aza1rat.marketsimapp.feature.auth.presentation.asUiText
 import ru.aza1rat.marketsimapp.feature.auth.register.domain.RegisterUserAuthUseCase
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class RegisterViewModel @Inject constructor(private val registerUserAuthUseCase: RegisterUserAuthUseCase) :
-    MviViewModel<RegisterIntent, RegisterState, RegisterEffect>(
-        RegisterState()
-    ) {
-
-    private val loginValidationChannel = Channel<String>(Channel.CONFLATED)
-    private val passwordValidationChannel = Channel<RegisterPasswordIntent>(Channel.CONFLATED)
+class RegisterViewModel @Inject constructor(
+    private val registerUserAuthUseCase: RegisterUserAuthUseCase,
+    @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) : MviViewModel<RegisterIntent, RegisterState, RegisterEffect>(
+    RegisterState()
+) {
+    private val loginValidationFlow = MutableStateFlow("")
+    private val passwordValidationFlow = MutableStateFlow(RegisterPasswordIntent())
 
     init {
         viewModelScope.launch {
-            loginValidationChannel.receiveAsFlow().collectLatest {
-                validateLogin(it)
+            loginValidationFlow.mapLatest { validateLogin(it) }.collect { loginValidationResult ->
+                updateState {
+                    it.copy(
+                        loginError = loginValidationResult.error,
+                        loginValidated = loginValidationResult.isValidated
+                    )
+                }
             }
-            passwordValidationChannel.receiveAsFlow().collectLatest {
-                validatePassword(it)
-            }
+        }
+        viewModelScope.launch {
+            passwordValidationFlow.mapLatest { validatePassword(it) }
+                .collect { passwordValidationResult ->
+                    updateState {
+                        it.copy(
+                            passwordError = passwordValidationResult.passwordError,
+                            confirmPasswordError = passwordValidationResult.confirmationPasswordError,
+                            passwordValidated = passwordValidationResult.passwordValidated,
+                            arePasswordEqual = passwordValidationResult.confirmationPasswordValidated
+                        )
+                    }
+                }
         }
     }
 
-    private fun validatePassword(registerPasswordIntent: RegisterPasswordIntent) {
+    private fun validatePassword(registerPasswordIntent: RegisterPasswordIntent): UiValidationPasswordResult {
         val passwordValidated = registerPasswordIntent.password.isPasswordValid()
-        val confirmationValidated = registerPasswordIntent.password == registerPasswordIntent.confirmationPassword
-        val error = if (passwordValidated) {
+        val confirmationValidated =
+            registerPasswordIntent.password == registerPasswordIntent.confirmationPassword
+        val error = if (passwordValidated || registerPasswordIntent.password.isEmpty()) {
             null
         } else {
             AuthError.ValidationError.INVALID_PASSWORD.asUiText()
@@ -55,43 +77,39 @@ class RegisterViewModel @Inject constructor(private val registerUserAuthUseCase:
         } else {
             null
         }
-        updateState {
-            it.copy(
-                passwordError = error,
-                confirmPasswordError = confirmationError,
-                passwordValidated = passwordValidated,
-                arePasswordEqual = confirmationValidated
-            )
-        }
+        return UiValidationPasswordResult(
+            passwordValidated = passwordValidated,
+            confirmationPasswordValidated = confirmationValidated,
+            passwordError = error,
+            confirmationPasswordError = confirmationError
+        )
     }
 
-    private fun validateLogin(login: String) {
+    private fun validateLogin(login: String): UiValidationResult {
         val loginValidated = login.normalizeLogin().isLoginValid()
-        val error = if (loginValidated) {
+        val error = if (loginValidated || login.isEmpty()) {
             null
         } else {
             AuthError.ValidationError.INVALID_LOGIN.asUiText()
         }
-        updateState {
-            it.copy(
-                loginError = error,
-                loginValidated = loginValidated
-            )
-        }
+        return UiValidationResult(
+            isValidated = loginValidated,
+            error = error
+        )
     }
 
-    override fun dispatch(
+    public override fun dispatch(
         intent: RegisterIntent
     ) {
         when (intent) {
-            is RegisterIntent.LoginChanged -> loginValidationChannel.trySend(intent.login)
+            is RegisterIntent.LoginChanged -> loginValidationFlow.value = intent.login
 
-            is RegisterIntent.PasswordChanged -> passwordValidationChannel.trySend(
-                RegisterPasswordIntent(
-                    password = intent.password,
-                    confirmationPassword = intent.confirmPassword
-                )
-            )
+            is RegisterIntent.PasswordChanged ->
+                passwordValidationFlow.value =
+                    RegisterPasswordIntent(
+                        password = intent.password,
+                        confirmationPassword = intent.confirmPassword
+                    )
 
             is RegisterIntent.AgreementChecked -> updateState {
                 it.copy(
@@ -118,7 +136,7 @@ class RegisterViewModel @Inject constructor(private val registerUserAuthUseCase:
     }
 
     private fun registerUser(login: String, password: String) {
-        if (state.value.isLoading) return
+        if (state.value.isLoading || !state.value.isSubmitEnabled) return
 
         viewModelScope.launch {
             updateState { it.copy(isLoading = true) }
@@ -128,38 +146,54 @@ class RegisterViewModel @Inject constructor(private val registerUserAuthUseCase:
                 email = loginTrimmed,
                 password = password
             )
-            try {
-                when (val res = registerUserAuthUseCase.invoke(userCredentials)) {
-                    is Result.Error<UserInfo, AuthError> -> when (val error = res.error) {
-                        AuthError.ValidationError.INVALID_PASSWORD -> updateState {
-                            it.copy(
-                                passwordError = error.asUiText()
+            withContext(ioDispatcher) {
+                try {
+                    when (val res = registerUserAuthUseCase.invoke(userCredentials)) {
+                        is Result.Error<UserInfo, AuthError> -> when (val error = res.error) {
+                            AuthError.ValidationError.INVALID_PASSWORD -> updateState {
+                                it.copy(
+                                    passwordError = error.asUiText()
+                                )
+                            }
+
+                            AuthError.ValidationError.INVALID_LOGIN -> updateState {
+                                it.copy(
+                                    loginError = error.asUiText()
+                                )
+                            }
+
+                            AuthError.CredentialsError.USER_ALREADY_EXISTS -> updateState {
+                                it.copy(
+                                    loginError = error.asUiText(),
+                                    loginValidated = false
+                                )
+                            }
+
+                            else -> emitEffect(
+                                RegisterEffect.ShowError(
+                                    error.asUiText()
+                                )
                             )
                         }
 
-                        AuthError.ValidationError.INVALID_LOGIN -> updateState {
-                            it.copy(
-                                loginError = error.asUiText()
-                            )
-                        }
-
-                        else -> emitEffect(
-                            RegisterEffect.ShowError(
-                                error.asUiText()
-                            )
-                        )
+                        is Result.Success<UserInfo, AuthError> -> emitEffect(RegisterEffect.NavigateToMain)
                     }
-
-                    is Result.Success<UserInfo, AuthError> -> emitEffect(RegisterEffect.NavigateToMain)
+                } finally {
+                    updateState { it.copy(isLoading = false) }
                 }
-            } finally {
-                updateState { it.copy(isLoading = false) }
             }
         }
     }
 
     private data class RegisterPasswordIntent(
-        val password: String,
-        val confirmationPassword: String,
+        val password: String = "",
+        val confirmationPassword: String = "",
+    )
+
+    private data class UiValidationPasswordResult(
+        val passwordValidated: Boolean,
+        val confirmationPasswordValidated: Boolean,
+        val passwordError: UiText?,
+        val confirmationPasswordError: UiText?
     )
 }

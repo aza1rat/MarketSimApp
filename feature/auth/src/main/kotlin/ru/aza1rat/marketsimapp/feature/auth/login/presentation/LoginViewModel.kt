@@ -12,7 +12,6 @@ import kotlinx.coroutines.withContext
 import ru.aza1rat.marketsimapp.core.di.IoDispatcher
 import ru.aza1rat.marketsimapp.core.domain.Result
 import ru.aza1rat.marketsimapp.core.mvi.MviViewModel
-import ru.aza1rat.marketsimapp.core.ui.text.UiText
 import ru.aza1rat.marketsimapp.feature.auth.data.mapper.normalizeLogin
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.AuthError
 import ru.aza1rat.marketsimapp.feature.auth.domain.model.CredentialsUser
@@ -20,6 +19,7 @@ import ru.aza1rat.marketsimapp.feature.auth.domain.model.UserInfo
 import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isLoginValid
 import ru.aza1rat.marketsimapp.feature.auth.domain.validaton.isPasswordValid
 import ru.aza1rat.marketsimapp.feature.auth.login.domain.LoginUserAuthUseCase
+import ru.aza1rat.marketsimapp.feature.auth.presentation.UiValidationResult
 import ru.aza1rat.marketsimapp.feature.auth.presentation.asUiText
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -56,27 +56,27 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun validatePassword(password: String): ValidationResult {
+    private fun validatePassword(password: String): UiValidationResult {
         val passwordValidated = password.isPasswordValid()
         val error = if (passwordValidated || password.isEmpty()) {
             null
         } else {
             AuthError.ValidationError.INVALID_PASSWORD.asUiText()
         }
-        return ValidationResult(
+        return UiValidationResult(
             isValidated = passwordValidated,
             error = error
         )
     }
 
-    private fun validateLogin(login: String): ValidationResult {
+    private fun validateLogin(login: String): UiValidationResult {
         val loginValidated = login.normalizeLogin().isLoginValid()
         val error = if (loginValidated || login.isEmpty()) {
             null
         } else {
             AuthError.ValidationError.INVALID_LOGIN.asUiText()
         }
-        return ValidationResult(
+        return UiValidationResult(
             isValidated = loginValidated,
             error = error
         )
@@ -142,6 +142,4 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
-    private data class ValidationResult(val isValidated: Boolean, val error: UiText?)
 }

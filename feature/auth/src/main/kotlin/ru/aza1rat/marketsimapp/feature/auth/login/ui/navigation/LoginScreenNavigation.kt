@@ -15,9 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalAutofillManager
 import androidx.compose.ui.platform.LocalResources
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -46,7 +43,6 @@ fun NavGraphBuilder.loginScreenNavigation(
         val snackBarHostState = remember { SnackbarHostState() }
         val currentResources by rememberUpdatedState(LocalResources.current)
         val autofillManager = LocalAutofillManager.current
-        val lifecycleOwner = LocalLifecycleOwner.current
 
         LaunchedEffect(viewModel) {
             viewModel.effects.collect { effect ->
@@ -67,15 +63,9 @@ fun NavGraphBuilder.loginScreenNavigation(
             }
         }
 
-        DisposableEffect(lifecycleOwner) {
-            val observer = LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_PAUSE) {
-                    autofillManager?.cancel()
-                }
-            }
-            lifecycleOwner.lifecycle.addObserver(observer)
+        DisposableEffect(autofillManager) {
             onDispose {
-                lifecycleOwner.lifecycle.removeObserver(observer)
+                autofillManager?.cancel()
             }
         }
 

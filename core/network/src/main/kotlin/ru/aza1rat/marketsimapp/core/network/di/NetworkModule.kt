@@ -26,7 +26,12 @@ class NetworkModule {
                 socketTimeoutMillis = SOCKET_TIMEOUT_MILLIS
             }
             install(ContentNegotiation) {
-                json(Json { ignoreUnknownKeys })
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                        encodeDefaults = true
+                    }
+                )
             }
         }
 }
