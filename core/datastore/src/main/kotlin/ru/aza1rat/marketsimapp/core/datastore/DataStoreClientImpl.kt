@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.aza1rat.marketsimapp.core.datastore.api.DataStoreClient
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 internal class DataStoreClientImpl @Inject constructor(private val datastore: DataStore<Preferences>) :
     DataStoreClient {
     override suspend fun saveValue(keyName: DataStoreKey, value: String) {

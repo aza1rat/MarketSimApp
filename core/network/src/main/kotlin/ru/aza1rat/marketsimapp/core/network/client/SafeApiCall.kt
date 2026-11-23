@@ -5,6 +5,8 @@ import io.ktor.client.statement.HttpResponse
 import kotlinx.io.IOException
 import kotlinx.serialization.SerializationException
 import ru.aza1rat.marketsimapp.core.network.dto.Response
+import ru.aza1rat.marketsimapp.core.network.exception.AuthorizationRequiredException
+import ru.aza1rat.marketsimapp.core.network.exception.UnauthorizedException
 
 @Suppress("SwallowedException")
 suspend fun <T> safeApiCall(
@@ -30,6 +32,10 @@ suspend fun <T> safeApiCall(
 
             else -> error(UNEXPECTED_TYPE_MESSAGE)
         }
+    } catch (e: UnauthorizedException) {
+        NetworkResult.AuthorizationRequired
+    } catch (e: AuthorizationRequiredException) {
+        NetworkResult.AuthorizationRequired
     } catch (e: HttpRequestTimeoutException) {
         NetworkResult.Timeout
     } catch (e: SerializationException) {

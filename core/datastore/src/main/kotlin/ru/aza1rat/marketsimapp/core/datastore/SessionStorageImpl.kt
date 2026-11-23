@@ -1,9 +1,8 @@
 package ru.aza1rat.marketsimapp.core.datastore
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import ru.aza1rat.marketsimapp.core.datastore.api.DataStoreClient
 import ru.aza1rat.marketsimapp.core.datastore.crypto.CryptoManager
@@ -17,36 +16,45 @@ internal class SessionStorageImpl @Inject constructor(
     private val cryptoManager: CryptoManager,
     private val dataStoreClient: DataStoreClient
 ) : SessionStorage {
-    override suspend fun getSession(): Flow<Session?> = flow {
-        val sessionTokenJson =
-            dataStoreClient.getValue(DataStoreKey.SESSION).first()
-        sessionTokenJson?.let {
-            val session = Json.decodeFromString<Session>(it)
-            if (isTokenExpired(session.expiresAt)) {
-                deleteSession().first()
-                emit(null)
-            } else {
-                val decryptedToken = cryptoManager.decrypt(session.token)
-                emit(session.copy(token = decryptedToken))
+    override fun observeSession(): Flow<Session?> =
+        dataStoreClient.getValue(DataStoreKey.SESSION).map { sessionTokenJson ->
+            sessionTokenJson?.let {
+                val session = Json.decodeFromString<Session>(it)
+                if (isTokenExpired(session.expiresAt)) {
+                    deleteSession().getOrThrow()
+                    null
+                } else {
+                    val decryptedToken = cryptoManager.decrypt(session.token)
+                    session.copy(token = decryptedToken)
+                }
             }
-        } ?: emit(null)
+        }
+
+    @Suppress("TooGenericExceptionCaught")
+    override suspend fun setSession(session: Session): Result<Boolean> {
+        return try {
+            val encryptedToken = cryptoManager.encrypt(session.token)
+            val encryptedSession = session.copy(token = encryptedToken)
+            val jsonSession = Json.encodeToString(encryptedSession)
+            dataStoreClient.saveValue(DataStoreKey.SESSION, jsonSession)
+            Result.success(true)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
-    override suspend fun setSession(session: Session): Flow<Result<Boolean>> = flow {
-        val encryptedToken = cryptoManager.encrypt(session.token)
-        val sessionEncryptedToken = session.copy(token = encryptedToken)
-        val jsonSession = Json.encodeToString(sessionEncryptedToken)
-        dataStoreClient.saveValue(DataStoreKey.SESSION, jsonSession)
-        emit(Result.success(true))
-    }.catch { error ->
-        emit(Result.failure(error))
-    }
-
-    override suspend fun deleteSession(): Flow<Result<Boolean>> = flow {
-        dataStoreClient.deleteValue(DataStoreKey.SESSION)
-        emit(Result.success(true))
-    }.catch { error ->
-        emit(Result.failure(error))
+    @Suppress("TooGenericExceptionCaught")
+    override suspend fun deleteSession(): Result<Boolean> {
+        return try {
+            dataStoreClient.deleteValue(DataStoreKey.SESSION)
+            Result.success(true)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     private fun isTokenExpired(expiresAt: Instant): Boolean {
