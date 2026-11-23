@@ -68,7 +68,7 @@ class AuthRepositoryImpl @Inject constructor(
                     val message = resultResponseDto?.message
                     Result.Error<UserInfo, AuthError>(code.toError(message))
                 } else {
-                    setSession(resultDto)?.let { return it }
+                    setSession(resultDto!!)?.let { return it }
 
                     Result.Success<UserInfo, AuthError>(user)
                 }
@@ -93,15 +93,15 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private suspend fun setSession(loginResponseDto: LoginResponseDto?): Result.Error<UserInfo, AuthError>? {
+    private suspend fun setSession(loginResponseDto: LoginResponseDto): Result.Error<UserInfo, AuthError>? {
         val session = try {
-            loginResponseDto?.toSession()
+            loginResponseDto.toSession()
         } catch (e: IllegalArgumentException) {
             return Result.Error<UserInfo, AuthError>(AuthError.Unknown(e.message))
         }
 
         return try {
-            session?.let {
+            session.let {
                 sessionManager.saveSession(it)
             }
             null

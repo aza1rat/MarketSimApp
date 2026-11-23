@@ -27,15 +27,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class DatastoreModule {
     @Binds
-    @Singleton
     internal abstract fun bindDataStoreClient(dataStoreClientImpl: DataStoreClientImpl): DataStoreClient
 
     @Binds
-    @Singleton
     internal abstract fun bindSessionStorage(sessionStorageImpl: SessionStorageImpl): SessionStorage
 
     @Binds
-    @Singleton
     internal abstract fun bindSessionManager(sessionManagerImpl: SessionManagerImpl): SessionManager
 
     companion object {

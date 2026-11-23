@@ -18,9 +18,7 @@ import ru.aza1rat.marketsimapp.core.network.exception.AuthorizationRequiredExcep
 import ru.aza1rat.marketsimapp.core.network.exception.UnauthorizedException
 import ru.aza1rat.marketsimapp.core.session.api.SessionManager
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class KtorNetworkExecutor @Inject constructor(
     private val client: HttpClient,
     private val sessionManager: SessionManager
