@@ -17,9 +17,8 @@ class SessionManagerImpl @Inject constructor(private val sessionStorage: Session
     }
 
     override suspend fun saveSession(session: Session) {
-        mutex.withLock {
             sessionStorage.setSession(session).getOrThrow()
-        }
+
     }
 
     override suspend fun handleUnauthorized(token: String) {
